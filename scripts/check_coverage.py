@@ -17,7 +17,7 @@ SOURCES = ("main.c", "ecu.c", "virtual_can.c")
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     build = root / "build"
-    gcno = sorted(build.glob("*_cov.gcno"))
+    gcno = sorted(build.glob("*.gcno"))
     if not gcno:
         print("coverage data (.gcno) not found in build/; run: make coverage", file=sys.stderr)
         return 2
@@ -40,10 +40,18 @@ def main() -> int:
         print(completed.stdout[-2000:], file=sys.stderr)
         return 2
     ok = True
+    seen = {}
     for filename, percent, total in blocks:
         short = Path(filename).name
         if short not in SOURCES:
             continue
+        seen[short] = (percent, total)
+    for short in SOURCES:
+        if short not in seen:
+            print(f"{short}: no coverage data", file=sys.stderr)
+            ok = False
+            continue
+        percent, total = seen[short]
         passed = float(percent) >= 100.0
         ok = ok and passed
         print(f"{short}: lines {percent}% of {total} "

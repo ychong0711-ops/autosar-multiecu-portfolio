@@ -21,9 +21,9 @@ tidy:
 		--checks='-*,clang-analyzer-*,bugprone-*,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling' \
 		--warnings-as-errors='*' -- -std=c11 -Isrc -Iconfig
 
-COV_OBJS := build/main_cov.o build/ecu_cov.o build/virtual_can_cov.o
+COV_OBJS := build/main.o build/ecu.o build/virtual_can.o
 
-build/%_cov.o: src/%.c src/*.h config/project_config.h
+build/%.o: src/%.c src/*.h config/project_config.h
 	@mkdir -p build
 	$(CC) -std=c11 -O0 -g --coverage -Isrc -Iconfig -c $< -o $@
 

@@ -42,6 +42,8 @@ Run individual scenarios:
 ./build/multiecu_demo invalid-dlc
 ./build/multiecu_demo invalid-range
 ./build/multiecu_demo invalid-seq
+./build/multiecu_demo wrap
+./build/multiecu_demo uds
 ```
 
 ## Verified results
@@ -54,6 +56,8 @@ Run individual scenarios:
 | `invalid-dlc` | REQ-ERR-003 | One malformed DLC rejected |
 | `invalid-range` | REQ-RNG-001 | 65535 and 251 km/h rejected; exact boundary 250 km/h accepted |
 | `invalid-seq` | REQ-ERR-004 | One duplicate counter flagged at 500 ms; stream re-synchronizes on next frame; remaining 10 frames accepted |
+| `wrap` | REQ-ERR-005 | Counter climbs to 255, wraps to 0 (accepted as NEW); stale replay rejected; stream re-synchronizes |
+| `uds` | REQ-UDS-001 | UDS diagnostic request/response injected at 600ms; COM path delivers all 11 frames unaffected |
 
 Generated evidence is in [`evidence/`](evidence/).
 

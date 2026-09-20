@@ -1,9 +1,17 @@
 CC ?= cc
 CFLAGS := -std=c11 -Wall -Wextra -Werror -pedantic -O2
+PYTHON ?= python3
 BIN := build/multiecu_demo
 SOURCES := src/main.c src/ecu.c src/virtual_can.c
 
-.PHONY: all run test evidence clean upstream-setup upstream-run
+# Windows clang produces no .exe suffix; detect and add one for local dev.
+ifeq ($(OS),Windows_NT)
+  COV_BIN := build/multiecu_demo_cov.exe
+else
+  COV_BIN := build/multiecu_demo_cov
+endif
+
+.PHONY: all run test evidence clean tidy
 all: $(BIN)
 
 $(BIN): $(SOURCES) src/*.h config/project_config.h
@@ -14,7 +22,7 @@ run: $(BIN)
 	./$(BIN) normal
 
 test: $(BIN)
-	python3 -m unittest discover -s tests -v
+	$(PYTHON) -m unittest discover -s tests -v
 
 tidy:
 	clang-tidy src/main.c src/ecu.c src/virtual_can.c \
@@ -27,10 +35,10 @@ build/%.o: src/%.c src/*.h config/project_config.h
 	@mkdir -p build
 	$(CC) -std=c11 -O0 -g --coverage -Isrc -Iconfig -c $< -o $@
 
-build/multiecu_demo_cov: $(COV_OBJS)
+$(COV_BIN): $(COV_OBJS)
 	$(CC) --coverage -o $@ $(COV_OBJS)
 
-coverage: build/multiecu_demo_cov
+coverage: $(COV_BIN)
 	cd build && ./multiecu_demo_cov normal > /dev/null
 	cd build && ./multiecu_demo_cov timeout > /dev/null
 	cd build && ./multiecu_demo_cov invalid-id > /dev/null
@@ -40,7 +48,7 @@ coverage: build/multiecu_demo_cov
 	cd build && ./multiecu_demo_cov wrap > /dev/null
 	cd build && ./multiecu_demo_cov uds > /dev/null
 	cd build && ./multiecu_demo_cov bogus > /dev/null 2>&1; test $$? -eq 2
-	python3 scripts/check_coverage.py
+	$(PYTHON) scripts/check_coverage.py
 
 evidence: $(BIN)
 	@mkdir -p evidence
@@ -52,7 +60,7 @@ evidence: $(BIN)
 	./$(BIN) invalid-seq > evidence/invalid-seq.log
 	./$(BIN) wrap > evidence/wrap.log
 	./$(BIN) uds > evidence/uds.log
-	python3 scripts/generate_test_report.py
+	$(PYTHON) scripts/generate_test_report.py
 
 clean:
 	rm -rf build third_party

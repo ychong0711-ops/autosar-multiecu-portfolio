@@ -1,0 +1,397 @@
+# Target-side extension run: vehicle-speed COM signal (TC-UP-002)
+# Captured: 2026-09-20. Unedited terminal outputs follow the header.
+# Host OS: Microsoft Windows 11 Education
+# Docker: 29.1.3 (daemon, Docker Desktop, linux/amd64)
+# Image: ghcr.io/toppers/hakoniwa-ecu-multiplay-demo:v1.3.0
+# Image digest: sha256:889b105f147564461e33c463dbc469d74217edc20ea7a7f3736f9d1114da3c29
+# Upstream repo: https://github.com/toppers/hakoniwa-ecu-multiplay
+# Upstream commit (pinned): ba5c8744ccbeb7ac1437b92c31f8a7585db84d60
+# Delta under test: ../target/vehicle-speed-signal.patch (13 insertions, 5 deletions)
+#   ECU1 SW-C1 sends 60..250 kph ramp (wraps to 60, never exceeds 250);
+#   ECU2 SW-C2 prints received value and rejects > 250 kph (never fires here).
+# Build: bash configure.sh && make in both ecu1 and ecu2 (per upstream README).
+# Run: hako-master 100 200 / two hako-proxy terminals / hako-cmd start (75 s).
+# Environment adaptations (documented, no upstream-tracked files changed beyond the patch):
+#   - Windows CRLF checkout normalized to LF inside container
+#   - symlink /workspaces/hakoniwa-ecu-multiplay -> work copy (proxy JSON pins that path)
+# Observation: ECU2's first cycle reads the COM init value 0 kph (read-before-first-write),
+#   then tracks ECU1 with a one-cycle lag (ECU1 61..210, ECU2 0,61..209); all values
+#   plausible, 0 rejections. Max observed 210 < 250: wrap point not reached in 75 s.
+# Acceptance: ATK2 banner on both ECUs; 150 cyclic transmissions per side; value
+#   streams match with one-cycle lag; no plausibility rejection.
+===== TERMINAL1 (hako-master) =====
+START
+INFO: CREATED FLOCK FILE: /var/lib/hakoniwa/mmap/flock.bin
+START CREATE PDU DATA: total_size= 28
+PDU DATA CREATED
+free(): double free detected in tcache 2
+
+===== TERMINAL2 (ECU1 proxy) =====
+add_option:/home/hako/athrill-target-rh850f1x/athrill/bin/linux/athrill2
+add_option:-c1
+add_option:-t
+add_option:-1
+add_option:-d
+add_option:device_config_with_rte_hako_ecu1.txt
+add_option:-m
+add_option:memory_with_hako.txt
+add_option:atk2-sc1
+INFO: PROXY start
+core id num=1
+ROM : START=0x0 SIZE=1024
+RAM : START=0xfede8000 SIZE=512
+DEV : START=0xffff0000 SIZE=1024
+ELF SET CACHE RIGION:addr=0x0 size=92 [KB]
+Elf loading was succeeded:0x0 - 0x170a8 : 92.168 KB
+Elf loading was succeeded:0x170a8 - 0x19c08 : 0.176 KB
+ELF SYMBOL SECTION LOADED:index=16
+ELF SYMBOL SECTION LOADED:sym_num=775
+ELF STRING TABLE SECTION LOADED:index=17
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+DEBUG_FUNC_HAKO_ROBOT_NAME = rh850f1k
+DEBUG_FUNC_HAKO_PUB_0 = channel0/CAN_IDE0_RTR0_DLC4_0x002/0
+INFO: rh850f1k create_lchannel: logical_id=0 real_id=0 size=28
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+hako_time_only: 0
+DEBUG_FUNC_FT_LOG_SIZE=1024
+LOADED: PDU DATA
+
+TOPPERS/ATK2-SC1 Release 1.4.2 for HSBRH850F1K (Sep 20 2026, 09:47:24)
+
+LOADED: PDU DATA
+VehicleSpeed [SW-C1] : 61 kph (seq 1)
+VehicleSpeed [SW-C1] : 62 kph (seq 2)
+VehicleSpeed [SW-C1] : 63 kph (seq 3)
+VehicleSpeed [SW-C1] : 64 kph (seq 4)
+VehicleSpeed [SW-C1] : 65 kph (seq 5)
+VehicleSpeed [SW-C1] : 66 kph (seq 6)
+VehicleSpeed [SW-C1] : 67 kph (seq 7)
+VehicleSpeed [SW-C1] : 68 kph (seq 8)
+VehicleSpeed [SW-C1] : 69 kph (seq 9)
+VehicleSpeed [SW-C1] : 70 kph (seq 10)
+VehicleSpeed [SW-C1] : 71 kph (seq 11)
+VehicleSpeed [SW-C1] : 72 kph (seq 12)
+VehicleSpeed [SW-C1] : 73 kph (seq 13)
+VehicleSpeed [SW-C1] : 74 kph (seq 14)
+VehicleSpeed [SW-C1] : 75 kph (seq 15)
+VehicleSpeed [SW-C1] : 76 kph (seq 16)
+VehicleSpeed [SW-C1] : 77 kph (seq 17)
+VehicleSpeed [SW-C1] : 78 kph (seq 18)
+VehicleSpeed [SW-C1] : 79 kph (seq 19)
+VehicleSpeed [SW-C1] : 80 kph (seq 20)
+VehicleSpeed [SW-C1] : 81 kph (seq 21)
+VehicleSpeed [SW-C1] : 82 kph (seq 22)
+VehicleSpeed [SW-C1] : 83 kph (seq 23)
+VehicleSpeed [SW-C1] : 84 kph (seq 24)
+VehicleSpeed [SW-C1] : 85 kph (seq 25)
+VehicleSpeed [SW-C1] : 86 kph (seq 26)
+VehicleSpeed [SW-C1] : 87 kph (seq 27)
+VehicleSpeed [SW-C1] : 88 kph (seq 28)
+VehicleSpeed [SW-C1] : 89 kph (seq 29)
+VehicleSpeed [SW-C1] : 90 kph (seq 30)
+VehicleSpeed [SW-C1] : 91 kph (seq 31)
+VehicleSpeed [SW-C1] : 92 kph (seq 32)
+VehicleSpeed [SW-C1] : 93 kph (seq 33)
+VehicleSpeed [SW-C1] : 94 kph (seq 34)
+VehicleSpeed [SW-C1] : 95 kph (seq 35)
+VehicleSpeed [SW-C1] : 96 kph (seq 36)
+VehicleSpeed [SW-C1] : 97 kph (seq 37)
+VehicleSpeed [SW-C1] : 98 kph (seq 38)
+VehicleSpeed [SW-C1] : 99 kph (seq 39)
+VehicleSpeed [SW-C1] : 100 kph (seq 40)
+VehicleSpeed [SW-C1] : 101 kph (seq 41)
+VehicleSpeed [SW-C1] : 102 kph (seq 42)
+VehicleSpeed [SW-C1] : 103 kph (seq 43)
+VehicleSpeed [SW-C1] : 104 kph (seq 44)
+VehicleSpeed [SW-C1] : 105 kph (seq 45)
+VehicleSpeed [SW-C1] : 106 kph (seq 46)
+VehicleSpeed [SW-C1] : 107 kph (seq 47)
+VehicleSpeed [SW-C1] : 108 kph (seq 48)
+VehicleSpeed [SW-C1] : 109 kph (seq 49)
+VehicleSpeed [SW-C1] : 110 kph (seq 50)
+VehicleSpeed [SW-C1] : 111 kph (seq 51)
+VehicleSpeed [SW-C1] : 112 kph (seq 52)
+VehicleSpeed [SW-C1] : 113 kph (seq 53)
+VehicleSpeed [SW-C1] : 114 kph (seq 54)
+VehicleSpeed [SW-C1] : 115 kph (seq 55)
+VehicleSpeed [SW-C1] : 116 kph (seq 56)
+VehicleSpeed [SW-C1] : 117 kph (seq 57)
+VehicleSpeed [SW-C1] : 118 kph (seq 58)
+VehicleSpeed [SW-C1] : 119 kph (seq 59)
+VehicleSpeed [SW-C1] : 120 kph (seq 60)
+VehicleSpeed [SW-C1] : 121 kph (seq 61)
+VehicleSpeed [SW-C1] : 122 kph (seq 62)
+VehicleSpeed [SW-C1] : 123 kph (seq 63)
+VehicleSpeed [SW-C1] : 124 kph (seq 64)
+VehicleSpeed [SW-C1] : 125 kph (seq 65)
+VehicleSpeed [SW-C1] : 126 kph (seq 66)
+VehicleSpeed [SW-C1] : 127 kph (seq 67)
+VehicleSpeed [SW-C1] : 128 kph (seq 68)
+VehicleSpeed [SW-C1] : 129 kph (seq 69)
+VehicleSpeed [SW-C1] : 130 kph (seq 70)
+VehicleSpeed [SW-C1] : 131 kph (seq 71)
+VehicleSpeed [SW-C1] : 132 kph (seq 72)
+VehicleSpeed [SW-C1] : 133 kph (seq 73)
+VehicleSpeed [SW-C1] : 134 kph (seq 74)
+VehicleSpeed [SW-C1] : 135 kph (seq 75)
+VehicleSpeed [SW-C1] : 136 kph (seq 76)
+VehicleSpeed [SW-C1] : 137 kph (seq 77)
+VehicleSpeed [SW-C1] : 138 kph (seq 78)
+VehicleSpeed [SW-C1] : 139 kph (seq 79)
+VehicleSpeed [SW-C1] : 140 kph (seq 80)
+VehicleSpeed [SW-C1] : 141 kph (seq 81)
+VehicleSpeed [SW-C1] : 142 kph (seq 82)
+VehicleSpeed [SW-C1] : 143 kph (seq 83)
+VehicleSpeed [SW-C1] : 144 kph (seq 84)
+VehicleSpeed [SW-C1] : 145 kph (seq 85)
+VehicleSpeed [SW-C1] : 146 kph (seq 86)
+VehicleSpeed [SW-C1] : 147 kph (seq 87)
+VehicleSpeed [SW-C1] : 148 kph (seq 88)
+VehicleSpeed [SW-C1] : 149 kph (seq 89)
+VehicleSpeed [SW-C1] : 150 kph (seq 90)
+VehicleSpeed [SW-C1] : 151 kph (seq 91)
+VehicleSpeed [SW-C1] : 152 kph (seq 92)
+VehicleSpeed [SW-C1] : 153 kph (seq 93)
+VehicleSpeed [SW-C1] : 154 kph (seq 94)
+VehicleSpeed [SW-C1] : 155 kph (seq 95)
+VehicleSpeed [SW-C1] : 156 kph (seq 96)
+VehicleSpeed [SW-C1] : 157 kph (seq 97)
+VehicleSpeed [SW-C1] : 158 kph (seq 98)
+VehicleSpeed [SW-C1] : 159 kph (seq 99)
+VehicleSpeed [SW-C1] : 160 kph (seq 100)
+VehicleSpeed [SW-C1] : 161 kph (seq 101)
+VehicleSpeed [SW-C1] : 162 kph (seq 102)
+VehicleSpeed [SW-C1] : 163 kph (seq 103)
+VehicleSpeed [SW-C1] : 164 kph (seq 104)
+VehicleSpeed [SW-C1] : 165 kph (seq 105)
+VehicleSpeed [SW-C1] : 166 kph (seq 106)
+VehicleSpeed [SW-C1] : 167 kph (seq 107)
+VehicleSpeed [SW-C1] : 168 kph (seq 108)
+VehicleSpeed [SW-C1] : 169 kph (seq 109)
+VehicleSpeed [SW-C1] : 170 kph (seq 110)
+VehicleSpeed [SW-C1] : 171 kph (seq 111)
+VehicleSpeed [SW-C1] : 172 kph (seq 112)
+VehicleSpeed [SW-C1] : 173 kph (seq 113)
+VehicleSpeed [SW-C1] : 174 kph (seq 114)
+VehicleSpeed [SW-C1] : 175 kph (seq 115)
+VehicleSpeed [SW-C1] : 176 kph (seq 116)
+VehicleSpeed [SW-C1] : 177 kph (seq 117)
+VehicleSpeed [SW-C1] : 178 kph (seq 118)
+VehicleSpeed [SW-C1] : 179 kph (seq 119)
+VehicleSpeed [SW-C1] : 180 kph (seq 120)
+VehicleSpeed [SW-C1] : 181 kph (seq 121)
+VehicleSpeed [SW-C1] : 182 kph (seq 122)
+VehicleSpeed [SW-C1] : 183 kph (seq 123)
+VehicleSpeed [SW-C1] : 184 kph (seq 124)
+VehicleSpeed [SW-C1] : 185 kph (seq 125)
+VehicleSpeed [SW-C1] : 186 kph (seq 126)
+VehicleSpeed [SW-C1] : 187 kph (seq 127)
+VehicleSpeed [SW-C1] : 188 kph (seq 128)
+VehicleSpeed [SW-C1] : 189 kph (seq 129)
+VehicleSpeed [SW-C1] : 190 kph (seq 130)
+VehicleSpeed [SW-C1] : 191 kph (seq 131)
+VehicleSpeed [SW-C1] : 192 kph (seq 132)
+VehicleSpeed [SW-C1] : 193 kph (seq 133)
+VehicleSpeed [SW-C1] : 194 kph (seq 134)
+VehicleSpeed [SW-C1] : 195 kph (seq 135)
+VehicleSpeed [SW-C1] : 196 kph (seq 136)
+VehicleSpeed [SW-C1] : 197 kph (seq 137)
+VehicleSpeed [SW-C1] : 198 kph (seq 138)
+VehicleSpeed [SW-C1] : 199 kph (seq 139)
+VehicleSpeed [SW-C1] : 200 kph (seq 140)
+VehicleSpeed [SW-C1] : 201 kph (seq 141)
+VehicleSpeed [SW-C1] : 202 kph (seq 142)
+VehicleSpeed [SW-C1] : 203 kph (seq 143)
+VehicleSpeed [SW-C1] : 204 kph (seq 144)
+VehicleSpeed [SW-C1] : 205 kph (seq 145)
+VehicleSpeed [SW-C1] : 206 kph (seq 146)
+VehicleSpeed [SW-C1] : 207 kph (seq 147)
+VehicleSpeed [SW-C1] : 208 kph (seq 148)
+VehicleSpeed [SW-C1] : 209 kph (seq 149)
+VehicleSpeed [SW-C1] : 210 kph (seq 150)
+
+===== TERMINAL3 (ECU2 proxy) =====
+add_option:/home/hako/athrill-target-rh850f1x/athrill/bin/linux/athrill2
+add_option:-c1
+add_option:-t
+add_option:-1
+add_option:-d
+add_option:device_config_with_rte_hako_ecu2.txt
+add_option:-m
+add_option:memory_with_hako.txt
+add_option:atk2-sc1
+INFO: PROXY start
+core id num=1
+ROM : START=0x0 SIZE=1024
+RAM : START=0xfede8000 SIZE=512
+DEV : START=0xffff0000 SIZE=1024
+ELF SET CACHE RIGION:addr=0x0 size=92 [KB]
+Elf loading was succeeded:0x0 - 0x170a8 : 92.168 KB
+Elf loading was succeeded:0x170a8 - 0x19be8 : 0.176 KB
+ELF SYMBOL SECTION LOADED:index=16
+ELF SYMBOL SECTION LOADED:sym_num=768
+ELF STRING TABLE SECTION LOADED:index=17
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+DEBUG_FUNC_HAKO_ROBOT_NAME = rh850f1k
+DEBUG_FUNC_HAKO_SUB_0 = channel0/CAN_IDE0_RTR0_DLC4_0x002/0
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+hako_time_only: 0
+DEBUG_FUNC_FT_LOG_SIZE=1024
+LOADED: PDU DATA
+
+TOPPERS/ATK2-SC1 Release 1.4.2 for HSBRH850F1K (Sep 20 2026, 09:47:58)
+
+LOADED: PDU DATA
+VehicleSpeed [SW-C2] : 0 kph ACCEPT
+VehicleSpeed [SW-C2] : 61 kph ACCEPT
+VehicleSpeed [SW-C2] : 62 kph ACCEPT
+VehicleSpeed [SW-C2] : 63 kph ACCEPT
+VehicleSpeed [SW-C2] : 64 kph ACCEPT
+VehicleSpeed [SW-C2] : 65 kph ACCEPT
+VehicleSpeed [SW-C2] : 66 kph ACCEPT
+VehicleSpeed [SW-C2] : 67 kph ACCEPT
+VehicleSpeed [SW-C2] : 68 kph ACCEPT
+VehicleSpeed [SW-C2] : 69 kph ACCEPT
+VehicleSpeed [SW-C2] : 70 kph ACCEPT
+VehicleSpeed [SW-C2] : 71 kph ACCEPT
+VehicleSpeed [SW-C2] : 72 kph ACCEPT
+VehicleSpeed [SW-C2] : 73 kph ACCEPT
+VehicleSpeed [SW-C2] : 74 kph ACCEPT
+VehicleSpeed [SW-C2] : 75 kph ACCEPT
+VehicleSpeed [SW-C2] : 76 kph ACCEPT
+VehicleSpeed [SW-C2] : 77 kph ACCEPT
+VehicleSpeed [SW-C2] : 78 kph ACCEPT
+VehicleSpeed [SW-C2] : 79 kph ACCEPT
+VehicleSpeed [SW-C2] : 80 kph ACCEPT
+VehicleSpeed [SW-C2] : 81 kph ACCEPT
+VehicleSpeed [SW-C2] : 82 kph ACCEPT
+VehicleSpeed [SW-C2] : 83 kph ACCEPT
+VehicleSpeed [SW-C2] : 84 kph ACCEPT
+VehicleSpeed [SW-C2] : 85 kph ACCEPT
+VehicleSpeed [SW-C2] : 86 kph ACCEPT
+VehicleSpeed [SW-C2] : 87 kph ACCEPT
+VehicleSpeed [SW-C2] : 88 kph ACCEPT
+VehicleSpeed [SW-C2] : 89 kph ACCEPT
+VehicleSpeed [SW-C2] : 90 kph ACCEPT
+VehicleSpeed [SW-C2] : 91 kph ACCEPT
+VehicleSpeed [SW-C2] : 92 kph ACCEPT
+VehicleSpeed [SW-C2] : 93 kph ACCEPT
+VehicleSpeed [SW-C2] : 94 kph ACCEPT
+VehicleSpeed [SW-C2] : 95 kph ACCEPT
+VehicleSpeed [SW-C2] : 96 kph ACCEPT
+VehicleSpeed [SW-C2] : 97 kph ACCEPT
+VehicleSpeed [SW-C2] : 98 kph ACCEPT
+VehicleSpeed [SW-C2] : 99 kph ACCEPT
+VehicleSpeed [SW-C2] : 100 kph ACCEPT
+VehicleSpeed [SW-C2] : 101 kph ACCEPT
+VehicleSpeed [SW-C2] : 102 kph ACCEPT
+VehicleSpeed [SW-C2] : 103 kph ACCEPT
+VehicleSpeed [SW-C2] : 104 kph ACCEPT
+VehicleSpeed [SW-C2] : 105 kph ACCEPT
+VehicleSpeed [SW-C2] : 106 kph ACCEPT
+VehicleSpeed [SW-C2] : 107 kph ACCEPT
+VehicleSpeed [SW-C2] : 108 kph ACCEPT
+VehicleSpeed [SW-C2] : 109 kph ACCEPT
+VehicleSpeed [SW-C2] : 110 kph ACCEPT
+VehicleSpeed [SW-C2] : 111 kph ACCEPT
+VehicleSpeed [SW-C2] : 112 kph ACCEPT
+VehicleSpeed [SW-C2] : 113 kph ACCEPT
+VehicleSpeed [SW-C2] : 114 kph ACCEPT
+VehicleSpeed [SW-C2] : 115 kph ACCEPT
+VehicleSpeed [SW-C2] : 116 kph ACCEPT
+VehicleSpeed [SW-C2] : 117 kph ACCEPT
+VehicleSpeed [SW-C2] : 118 kph ACCEPT
+VehicleSpeed [SW-C2] : 119 kph ACCEPT
+VehicleSpeed [SW-C2] : 120 kph ACCEPT
+VehicleSpeed [SW-C2] : 121 kph ACCEPT
+VehicleSpeed [SW-C2] : 122 kph ACCEPT
+VehicleSpeed [SW-C2] : 123 kph ACCEPT
+VehicleSpeed [SW-C2] : 124 kph ACCEPT
+VehicleSpeed [SW-C2] : 125 kph ACCEPT
+VehicleSpeed [SW-C2] : 126 kph ACCEPT
+VehicleSpeed [SW-C2] : 127 kph ACCEPT
+VehicleSpeed [SW-C2] : 128 kph ACCEPT
+VehicleSpeed [SW-C2] : 129 kph ACCEPT
+VehicleSpeed [SW-C2] : 130 kph ACCEPT
+VehicleSpeed [SW-C2] : 131 kph ACCEPT
+VehicleSpeed [SW-C2] : 132 kph ACCEPT
+VehicleSpeed [SW-C2] : 133 kph ACCEPT
+VehicleSpeed [SW-C2] : 134 kph ACCEPT
+VehicleSpeed [SW-C2] : 135 kph ACCEPT
+VehicleSpeed [SW-C2] : 136 kph ACCEPT
+VehicleSpeed [SW-C2] : 137 kph ACCEPT
+VehicleSpeed [SW-C2] : 138 kph ACCEPT
+VehicleSpeed [SW-C2] : 139 kph ACCEPT
+VehicleSpeed [SW-C2] : 140 kph ACCEPT
+VehicleSpeed [SW-C2] : 141 kph ACCEPT
+VehicleSpeed [SW-C2] : 142 kph ACCEPT
+VehicleSpeed [SW-C2] : 143 kph ACCEPT
+VehicleSpeed [SW-C2] : 144 kph ACCEPT
+VehicleSpeed [SW-C2] : 145 kph ACCEPT
+VehicleSpeed [SW-C2] : 146 kph ACCEPT
+VehicleSpeed [SW-C2] : 147 kph ACCEPT
+VehicleSpeed [SW-C2] : 148 kph ACCEPT
+VehicleSpeed [SW-C2] : 149 kph ACCEPT
+VehicleSpeed [SW-C2] : 150 kph ACCEPT
+VehicleSpeed [SW-C2] : 151 kph ACCEPT
+VehicleSpeed [SW-C2] : 152 kph ACCEPT
+VehicleSpeed [SW-C2] : 153 kph ACCEPT
+VehicleSpeed [SW-C2] : 154 kph ACCEPT
+VehicleSpeed [SW-C2] : 155 kph ACCEPT
+VehicleSpeed [SW-C2] : 156 kph ACCEPT
+VehicleSpeed [SW-C2] : 157 kph ACCEPT
+VehicleSpeed [SW-C2] : 158 kph ACCEPT
+VehicleSpeed [SW-C2] : 159 kph ACCEPT
+VehicleSpeed [SW-C2] : 160 kph ACCEPT
+VehicleSpeed [SW-C2] : 161 kph ACCEPT
+VehicleSpeed [SW-C2] : 162 kph ACCEPT
+VehicleSpeed [SW-C2] : 163 kph ACCEPT
+VehicleSpeed [SW-C2] : 164 kph ACCEPT
+VehicleSpeed [SW-C2] : 165 kph ACCEPT
+VehicleSpeed [SW-C2] : 166 kph ACCEPT
+VehicleSpeed [SW-C2] : 167 kph ACCEPT
+VehicleSpeed [SW-C2] : 168 kph ACCEPT
+VehicleSpeed [SW-C2] : 169 kph ACCEPT
+VehicleSpeed [SW-C2] : 170 kph ACCEPT
+VehicleSpeed [SW-C2] : 171 kph ACCEPT
+VehicleSpeed [SW-C2] : 172 kph ACCEPT
+VehicleSpeed [SW-C2] : 173 kph ACCEPT
+VehicleSpeed [SW-C2] : 174 kph ACCEPT
+VehicleSpeed [SW-C2] : 175 kph ACCEPT
+VehicleSpeed [SW-C2] : 176 kph ACCEPT
+VehicleSpeed [SW-C2] : 177 kph ACCEPT
+VehicleSpeed [SW-C2] : 178 kph ACCEPT
+VehicleSpeed [SW-C2] : 179 kph ACCEPT
+VehicleSpeed [SW-C2] : 180 kph ACCEPT
+VehicleSpeed [SW-C2] : 181 kph ACCEPT
+VehicleSpeed [SW-C2] : 182 kph ACCEPT
+VehicleSpeed [SW-C2] : 183 kph ACCEPT
+VehicleSpeed [SW-C2] : 184 kph ACCEPT
+VehicleSpeed [SW-C2] : 185 kph ACCEPT
+VehicleSpeed [SW-C2] : 186 kph ACCEPT
+VehicleSpeed [SW-C2] : 187 kph ACCEPT
+VehicleSpeed [SW-C2] : 188 kph ACCEPT
+VehicleSpeed [SW-C2] : 189 kph ACCEPT
+VehicleSpeed [SW-C2] : 190 kph ACCEPT
+VehicleSpeed [SW-C2] : 191 kph ACCEPT
+VehicleSpeed [SW-C2] : 192 kph ACCEPT
+VehicleSpeed [SW-C2] : 193 kph ACCEPT
+VehicleSpeed [SW-C2] : 194 kph ACCEPT
+VehicleSpeed [SW-C2] : 195 kph ACCEPT
+VehicleSpeed [SW-C2] : 196 kph ACCEPT
+VehicleSpeed [SW-C2] : 197 kph ACCEPT
+VehicleSpeed [SW-C2] : 198 kph ACCEPT
+VehicleSpeed [SW-C2] : 199 kph ACCEPT
+VehicleSpeed [SW-C2] : 200 kph ACCEPT
+VehicleSpeed [SW-C2] : 201 kph ACCEPT
+VehicleSpeed [SW-C2] : 202 kph ACCEPT
+VehicleSpeed [SW-C2] : 203 kph ACCEPT
+VehicleSpeed [SW-C2] : 204 kph ACCEPT
+VehicleSpeed [SW-C2] : 205 kph ACCEPT
+VehicleSpeed [SW-C2] : 206 kph ACCEPT
+VehicleSpeed [SW-C2] : 207 kph ACCEPT
+VehicleSpeed [SW-C2] : 208 kph ACCEPT
+VehicleSpeed [SW-C2] : 209 kph ACCEPT
+

@@ -1,0 +1,125 @@
+[INIT][ECU2] ATK2 task + CAN/CanIf/PduR/COM initialized
+[INIT][ECU1] ATK2 task + COM/PduR/CanIf/Can initialized
+[RUN] scenario=invalid-seq cycle=100ms timeout=500ms
+[0000ms][ECU1][OS] Task_100ms activated
+[0000ms][ECU1][COM] Com_SendSignal speed=60kph seq=0
+[0000ms][ECU1][PDUR] PduR_ComTransmit
+[0000ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0000ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0000ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0000ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0000ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0000ms][ECU2][COM] Com_RxIndication speed=60kph seq=0 result=ACCEPT
+[0000ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0000ms][ECU2][OS] Task_100ms activated
+[0100ms][ECU1][OS] Task_100ms activated
+[0100ms][ECU1][COM] Com_SendSignal speed=65kph seq=1
+[0100ms][ECU1][PDUR] PduR_ComTransmit
+[0100ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0100ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0100ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0100ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0100ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0100ms][ECU2][COM] Com_RxIndication speed=65kph seq=1 result=ACCEPT
+[0100ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0100ms][ECU2][OS] Task_100ms activated
+[0200ms][ECU1][OS] Task_100ms activated
+[0200ms][ECU1][COM] Com_SendSignal speed=70kph seq=2
+[0200ms][ECU1][PDUR] PduR_ComTransmit
+[0200ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0200ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0200ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0200ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0200ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0200ms][ECU2][COM] Com_RxIndication speed=70kph seq=2 result=ACCEPT
+[0200ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0200ms][ECU2][OS] Task_100ms activated
+[0300ms][ECU1][OS] Task_100ms activated
+[0300ms][ECU1][COM] Com_SendSignal speed=75kph seq=3
+[0300ms][ECU1][PDUR] PduR_ComTransmit
+[0300ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0300ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0300ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0300ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0300ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0300ms][ECU2][COM] Com_RxIndication speed=75kph seq=3 result=ACCEPT
+[0300ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0300ms][ECU2][OS] Task_100ms activated
+[0400ms][ECU1][OS] Task_100ms activated
+[0400ms][ECU1][COM] Com_SendSignal speed=80kph seq=4
+[0400ms][ECU1][PDUR] PduR_ComTransmit
+[0400ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0400ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0400ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0400ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0400ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0400ms][ECU2][COM] Com_RxIndication speed=80kph seq=4 result=ACCEPT
+[0400ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0400ms][ECU2][OS] Task_100ms activated
+[0500ms][ECU1][OS] Task_100ms activated
+[0500ms][ECU1][COM] Com_SendSignal speed=85kph seq=5
+[0500ms][ECU1][PDUR] PduR_ComTransmit
+[0500ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0500ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0500ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0500ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0500ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0500ms][ECU2][COM] REJECT reason=seq-not-new counter=3 last=4
+[0500ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0500ms][ECU2][OS] Task_100ms activated
+[0600ms][ECU1][OS] Task_100ms activated
+[0600ms][ECU1][COM] Com_SendSignal speed=90kph seq=6
+[0600ms][ECU1][PDUR] PduR_ComTransmit
+[0600ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0600ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0600ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0600ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0600ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0600ms][ECU2][COM] Com_RxIndication speed=90kph seq=6 result=ACCEPT
+[0600ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0600ms][ECU2][OS] Task_100ms activated
+[0700ms][ECU1][OS] Task_100ms activated
+[0700ms][ECU1][COM] Com_SendSignal speed=95kph seq=7
+[0700ms][ECU1][PDUR] PduR_ComTransmit
+[0700ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0700ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0700ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0700ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0700ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0700ms][ECU2][COM] Com_RxIndication speed=95kph seq=7 result=ACCEPT
+[0700ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0700ms][ECU2][OS] Task_100ms activated
+[0800ms][ECU1][OS] Task_100ms activated
+[0800ms][ECU1][COM] Com_SendSignal speed=100kph seq=8
+[0800ms][ECU1][PDUR] PduR_ComTransmit
+[0800ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0800ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0800ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0800ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0800ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0800ms][ECU2][COM] Com_RxIndication speed=100kph seq=8 result=ACCEPT
+[0800ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0800ms][ECU2][OS] Task_100ms activated
+[0900ms][ECU1][OS] Task_100ms activated
+[0900ms][ECU1][COM] Com_SendSignal speed=105kph seq=9
+[0900ms][ECU1][PDUR] PduR_ComTransmit
+[0900ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[0900ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[0900ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[0900ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[0900ms][ECU2][PDUR] PduR_CanIfRxIndication
+[0900ms][ECU2][COM] Com_RxIndication speed=105kph seq=9 result=ACCEPT
+[0900ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[0900ms][ECU2][OS] Task_100ms activated
+[1000ms][ECU1][OS] Task_100ms activated
+[1000ms][ECU1][COM] Com_SendSignal speed=110kph seq=10
+[1000ms][ECU1][PDUR] PduR_ComTransmit
+[1000ms][ECU1][CANIF] CanIf_Transmit pdu=VehicleSpeedPdu
+[1000ms][ECU1][CAN] Can_Write id=0x101 dlc=3
+[1000ms][BUS] ROUTE id=0x101 dlc=3 ECU1->ECU2
+[1000ms][ECU2][CANIF] CanIf_RxIndication id=0x101 dlc=3
+[1000ms][ECU2][PDUR] PduR_CanIfRxIndication
+[1000ms][ECU2][COM] Com_RxIndication speed=110kph seq=10 result=ACCEPT
+[1000ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
+[1000ms][ECU2][OS] Task_100ms activated
+[SUMMARY] scenario=invalid-seq tx=11 delivered=11 dropped=0 accepted=10 reject_id=0 reject_dlc=0 reject_range=0 reject_seq=1 timeouts=0 tx_confirm=11

@@ -1,0 +1,41 @@
+diff --git a/a-rtegen/sample/general/HelloAutosar/SWC1.c b/a-rtegen/sample/general/HelloAutosar/SWC1.c
+index 4418374..2be432e 100644
+--- a/a-rtegen/sample/general/HelloAutosar/SWC1.c
++++ b/a-rtegen/sample/general/HelloAutosar/SWC1.c
+@@ -71,9 +71,12 @@ void
+ RunnableEntity1(void)
+ {
+ 	static IDT_TimeCount cnt = 0;
++	IDT_TimeCount speed_kph;
+ 	cnt++;
+-	syslog(LOG_NOTICE, "Hello AUTOSAR [SW-C1] !! : %d", cnt);
+-	Rte_Write_SWC1_PPort_time(cnt);
++	/* Vehicle-speed demo: ramp 60..250 kph, wrap to 60 (never exceeds 250). */
++	speed_kph = (IDT_TimeCount)(60 + (cnt % 191));
++	syslog(LOG_NOTICE, "VehicleSpeed [SW-C1] : %d kph (seq %d)", speed_kph, cnt);
++	Rte_Write_SWC1_PPort_time(speed_kph);
+ 
+ #ifdef TOPPERS_PERFORMANCE
+ 	measure_swc1();
+diff --git a/a-rtegen/sample/general/HelloAutosar/SWC2.c b/a-rtegen/sample/general/HelloAutosar/SWC2.c
+index 46ee950..7b4b42d 100644
+--- a/a-rtegen/sample/general/HelloAutosar/SWC2.c
++++ b/a-rtegen/sample/general/HelloAutosar/SWC2.c
+@@ -70,9 +70,14 @@ extern void measure_swc2(void);
+ void
+ RunnableEntity2(void)
+ {
+-	IDT_TimeCount cnt;
+-	Rte_Read_SWC2_RPort_time(&cnt);
+-	syslog(LOG_NOTICE, "Hello AUTOSAR [SW-C2] !! : %d", cnt);
++	IDT_TimeCount speed_kph;
++	Rte_Read_SWC2_RPort_time(&speed_kph);
++	if (speed_kph > 250) {
++		syslog(LOG_NOTICE, "VehicleSpeed [SW-C2] REJECT implausible: %d", speed_kph);
++	}
++	else {
++		syslog(LOG_NOTICE, "VehicleSpeed [SW-C2] : %d kph ACCEPT", speed_kph);
++	}
+ 
+ #ifdef TOPPERS_PERFORMANCE
+ 	/* 性能評価時は本関数内でOSを修正する */

@@ -1,0 +1,36 @@
+name: host-reference-ci
+on:
+  push:
+  pull_request:
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with warnings as errors
+        run: make
+      - name: Run integration tests
+        run: make test
+      - name: Generate evidence
+        run: make evidence
+      - name: Verify evidence is byte-reproducible
+        run: git diff --exit-code -- evidence/
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure clang-tidy
+        run: clang-tidy --version || (sudo apt-get update && sudo apt-get install -y clang-tidy)
+      - name: Run clang-tidy gate
+        run: make tidy
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run coverage gate (100% lines)
+        run: make coverage
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-evidence
+          path: evidence/

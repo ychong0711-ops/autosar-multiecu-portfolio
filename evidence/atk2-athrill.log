@@ -1,0 +1,398 @@
+# Real ATK2/A-COMSTACK/Athrill execution evidence (TC-UP-001)
+# Captured: 2026-09-20. Unedited terminal outputs follow the header.
+# Host OS: Microsoft Windows 11 Education
+# Docker: 29.1.3 (daemon, Docker Desktop, linux/amd64, 8 CPU / 12 GB)
+# Image: ghcr.io/toppers/hakoniwa-ecu-multiplay-demo:v1.3.0
+# Image digest: sha256:889b105f147564461e33c463dbc469d74217edc20ea7a7f3736f9d1114da3c29
+# Upstream repo: https://github.com/toppers/hakoniwa-ecu-multiplay
+# Upstream commit (pinned): ba5c8744ccbeb7ac1437b92c31f8a7585db84d60
+# Build (inside container, per upstream README):
+#   ECU1: a-rtegen/sample/sc1/HelloAutosarWithCom/hsbrh850f1k_gcc/ecu1 :: bash configure.sh && make
+#   ECU2: a-rtegen/sample/sc1/HelloAutosarWithCom/hsbrh850f1k_gcc/ecu2 :: bash configure.sh && make
+# Run (4 terminals): hako-master 100 200 / hako-proxy proxy_config_rte_ecu1.json /
+#   hako-proxy proxy_config_rte_ecu2.json / hako-cmd start (75 s observation)
+# Environment adaptations (documented, no source changes):
+#   - Windows CRLF checkout normalized to LF inside container (git reset --hard with core.autocrlf=false)
+#   - symlink /workspaces/hakoniwa-ecu-multiplay -> work copy (proxy JSON pins that path)
+# Note: hako-master printed 'free(): double free detected' on teardown AFTER the
+#   150-cycle run completed; both ECU proxies show full banner + COM traffic.
+# Acceptance: banner 'TOPPERS/ATK2-SC1 Release 1.4.2 for HSBRH850F1K' present on both
+#   ECUs; ECU1 SW-C1 and ECU2 SW-C2 each completed 150 cyclic COM transmissions.
+===== TERMINAL1 (hako-master) =====
+START
+START CREATE PDU DATA: total_size= 28
+PDU DATA CREATED
+free(): double free detected in tcache 2
+
+===== TERMINAL2 (ECU1 proxy) =====
+add_option:/home/hako/athrill-target-rh850f1x/athrill/bin/linux/athrill2
+add_option:-c1
+add_option:-t
+add_option:-1
+add_option:-d
+add_option:device_config_with_rte_hako_ecu1.txt
+add_option:-m
+add_option:memory_with_hako.txt
+add_option:atk2-sc1
+INFO: PROXY start
+core id num=1
+ROM : START=0x0 SIZE=1024
+RAM : START=0xfede8000 SIZE=512
+DEV : START=0xffff0000 SIZE=1024
+ELF SET CACHE RIGION:addr=0x0 size=92 [KB]
+Elf loading was succeeded:0x0 - 0x170a8 : 92.168 KB
+Elf loading was succeeded:0x170a8 - 0x19c08 : 0.176 KB
+ELF SYMBOL SECTION LOADED:index=16
+ELF SYMBOL SECTION LOADED:sym_num=775
+ELF STRING TABLE SECTION LOADED:index=17
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+DEBUG_FUNC_HAKO_ROBOT_NAME = rh850f1k
+DEBUG_FUNC_HAKO_PUB_0 = channel0/CAN_IDE0_RTR0_DLC4_0x002/0
+INFO: rh850f1k create_lchannel: logical_id=0 real_id=0 size=28
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node1
+hako_time_only: 0
+DEBUG_FUNC_FT_LOG_SIZE=1024
+LOADED: PDU DATA
+
+TOPPERS/ATK2-SC1 Release 1.4.2 for HSBRH850F1K (Sep 20 2026, 09:03:34)
+
+LOADED: PDU DATA
+Hello AUTOSAR [SW-C1] !! : 1
+Hello AUTOSAR [SW-C1] !! : 2
+Hello AUTOSAR [SW-C1] !! : 3
+Hello AUTOSAR [SW-C1] !! : 4
+Hello AUTOSAR [SW-C1] !! : 5
+Hello AUTOSAR [SW-C1] !! : 6
+Hello AUTOSAR [SW-C1] !! : 7
+Hello AUTOSAR [SW-C1] !! : 8
+Hello AUTOSAR [SW-C1] !! : 9
+Hello AUTOSAR [SW-C1] !! : 10
+Hello AUTOSAR [SW-C1] !! : 11
+Hello AUTOSAR [SW-C1] !! : 12
+Hello AUTOSAR [SW-C1] !! : 13
+Hello AUTOSAR [SW-C1] !! : 14
+Hello AUTOSAR [SW-C1] !! : 15
+Hello AUTOSAR [SW-C1] !! : 16
+Hello AUTOSAR [SW-C1] !! : 17
+Hello AUTOSAR [SW-C1] !! : 18
+Hello AUTOSAR [SW-C1] !! : 19
+Hello AUTOSAR [SW-C1] !! : 20
+Hello AUTOSAR [SW-C1] !! : 21
+Hello AUTOSAR [SW-C1] !! : 22
+Hello AUTOSAR [SW-C1] !! : 23
+Hello AUTOSAR [SW-C1] !! : 24
+Hello AUTOSAR [SW-C1] !! : 25
+Hello AUTOSAR [SW-C1] !! : 26
+Hello AUTOSAR [SW-C1] !! : 27
+Hello AUTOSAR [SW-C1] !! : 28
+Hello AUTOSAR [SW-C1] !! : 29
+Hello AUTOSAR [SW-C1] !! : 30
+Hello AUTOSAR [SW-C1] !! : 31
+Hello AUTOSAR [SW-C1] !! : 32
+Hello AUTOSAR [SW-C1] !! : 33
+Hello AUTOSAR [SW-C1] !! : 34
+Hello AUTOSAR [SW-C1] !! : 35
+Hello AUTOSAR [SW-C1] !! : 36
+Hello AUTOSAR [SW-C1] !! : 37
+Hello AUTOSAR [SW-C1] !! : 38
+Hello AUTOSAR [SW-C1] !! : 39
+Hello AUTOSAR [SW-C1] !! : 40
+Hello AUTOSAR [SW-C1] !! : 41
+Hello AUTOSAR [SW-C1] !! : 42
+Hello AUTOSAR [SW-C1] !! : 43
+Hello AUTOSAR [SW-C1] !! : 44
+Hello AUTOSAR [SW-C1] !! : 45
+Hello AUTOSAR [SW-C1] !! : 46
+Hello AUTOSAR [SW-C1] !! : 47
+Hello AUTOSAR [SW-C1] !! : 48
+Hello AUTOSAR [SW-C1] !! : 49
+Hello AUTOSAR [SW-C1] !! : 50
+Hello AUTOSAR [SW-C1] !! : 51
+Hello AUTOSAR [SW-C1] !! : 52
+Hello AUTOSAR [SW-C1] !! : 53
+Hello AUTOSAR [SW-C1] !! : 54
+Hello AUTOSAR [SW-C1] !! : 55
+Hello AUTOSAR [SW-C1] !! : 56
+Hello AUTOSAR [SW-C1] !! : 57
+Hello AUTOSAR [SW-C1] !! : 58
+Hello AUTOSAR [SW-C1] !! : 59
+Hello AUTOSAR [SW-C1] !! : 60
+Hello AUTOSAR [SW-C1] !! : 61
+Hello AUTOSAR [SW-C1] !! : 62
+Hello AUTOSAR [SW-C1] !! : 63
+Hello AUTOSAR [SW-C1] !! : 64
+Hello AUTOSAR [SW-C1] !! : 65
+Hello AUTOSAR [SW-C1] !! : 66
+Hello AUTOSAR [SW-C1] !! : 67
+Hello AUTOSAR [SW-C1] !! : 68
+Hello AUTOSAR [SW-C1] !! : 69
+Hello AUTOSAR [SW-C1] !! : 70
+Hello AUTOSAR [SW-C1] !! : 71
+Hello AUTOSAR [SW-C1] !! : 72
+Hello AUTOSAR [SW-C1] !! : 73
+Hello AUTOSAR [SW-C1] !! : 74
+Hello AUTOSAR [SW-C1] !! : 75
+Hello AUTOSAR [SW-C1] !! : 76
+Hello AUTOSAR [SW-C1] !! : 77
+Hello AUTOSAR [SW-C1] !! : 78
+Hello AUTOSAR [SW-C1] !! : 79
+Hello AUTOSAR [SW-C1] !! : 80
+Hello AUTOSAR [SW-C1] !! : 81
+Hello AUTOSAR [SW-C1] !! : 82
+Hello AUTOSAR [SW-C1] !! : 83
+Hello AUTOSAR [SW-C1] !! : 84
+Hello AUTOSAR [SW-C1] !! : 85
+Hello AUTOSAR [SW-C1] !! : 86
+Hello AUTOSAR [SW-C1] !! : 87
+Hello AUTOSAR [SW-C1] !! : 88
+Hello AUTOSAR [SW-C1] !! : 89
+Hello AUTOSAR [SW-C1] !! : 90
+Hello AUTOSAR [SW-C1] !! : 91
+Hello AUTOSAR [SW-C1] !! : 92
+Hello AUTOSAR [SW-C1] !! : 93
+Hello AUTOSAR [SW-C1] !! : 94
+Hello AUTOSAR [SW-C1] !! : 95
+Hello AUTOSAR [SW-C1] !! : 96
+Hello AUTOSAR [SW-C1] !! : 97
+Hello AUTOSAR [SW-C1] !! : 98
+Hello AUTOSAR [SW-C1] !! : 99
+Hello AUTOSAR [SW-C1] !! : 100
+Hello AUTOSAR [SW-C1] !! : 101
+Hello AUTOSAR [SW-C1] !! : 102
+Hello AUTOSAR [SW-C1] !! : 103
+Hello AUTOSAR [SW-C1] !! : 104
+Hello AUTOSAR [SW-C1] !! : 105
+Hello AUTOSAR [SW-C1] !! : 106
+Hello AUTOSAR [SW-C1] !! : 107
+Hello AUTOSAR [SW-C1] !! : 108
+Hello AUTOSAR [SW-C1] !! : 109
+Hello AUTOSAR [SW-C1] !! : 110
+Hello AUTOSAR [SW-C1] !! : 111
+Hello AUTOSAR [SW-C1] !! : 112
+Hello AUTOSAR [SW-C1] !! : 113
+Hello AUTOSAR [SW-C1] !! : 114
+Hello AUTOSAR [SW-C1] !! : 115
+Hello AUTOSAR [SW-C1] !! : 116
+Hello AUTOSAR [SW-C1] !! : 117
+Hello AUTOSAR [SW-C1] !! : 118
+Hello AUTOSAR [SW-C1] !! : 119
+Hello AUTOSAR [SW-C1] !! : 120
+Hello AUTOSAR [SW-C1] !! : 121
+Hello AUTOSAR [SW-C1] !! : 122
+Hello AUTOSAR [SW-C1] !! : 123
+Hello AUTOSAR [SW-C1] !! : 124
+Hello AUTOSAR [SW-C1] !! : 125
+Hello AUTOSAR [SW-C1] !! : 126
+Hello AUTOSAR [SW-C1] !! : 127
+Hello AUTOSAR [SW-C1] !! : 128
+Hello AUTOSAR [SW-C1] !! : 129
+Hello AUTOSAR [SW-C1] !! : 130
+Hello AUTOSAR [SW-C1] !! : 131
+Hello AUTOSAR [SW-C1] !! : 132
+Hello AUTOSAR [SW-C1] !! : 133
+Hello AUTOSAR [SW-C1] !! : 134
+Hello AUTOSAR [SW-C1] !! : 135
+Hello AUTOSAR [SW-C1] !! : 136
+Hello AUTOSAR [SW-C1] !! : 137
+Hello AUTOSAR [SW-C1] !! : 138
+Hello AUTOSAR [SW-C1] !! : 139
+Hello AUTOSAR [SW-C1] !! : 140
+Hello AUTOSAR [SW-C1] !! : 141
+Hello AUTOSAR [SW-C1] !! : 142
+Hello AUTOSAR [SW-C1] !! : 143
+Hello AUTOSAR [SW-C1] !! : 144
+Hello AUTOSAR [SW-C1] !! : 145
+Hello AUTOSAR [SW-C1] !! : 146
+Hello AUTOSAR [SW-C1] !! : 147
+Hello AUTOSAR [SW-C1] !! : 148
+Hello AUTOSAR [SW-C1] !! : 149
+Hello AUTOSAR [SW-C1] !! : 150
+
+===== TERMINAL3 (ECU2 proxy) =====
+add_option:/home/hako/athrill-target-rh850f1x/athrill/bin/linux/athrill2
+add_option:-c1
+add_option:-t
+add_option:-1
+add_option:-d
+add_option:device_config_with_rte_hako_ecu2.txt
+add_option:-m
+add_option:memory_with_hako.txt
+add_option:atk2-sc1
+INFO: PROXY start
+core id num=1
+ROM : START=0x0 SIZE=1024
+RAM : START=0xfede8000 SIZE=512
+DEV : START=0xffff0000 SIZE=1024
+ELF SET CACHE RIGION:addr=0x0 size=92 [KB]
+Elf loading was succeeded:0x0 - 0x170a8 : 92.168 KB
+Elf loading was succeeded:0x170a8 - 0x19be8 : 0.176 KB
+ELF SYMBOL SECTION LOADED:index=16
+ELF SYMBOL SECTION LOADED:sym_num=768
+ELF STRING TABLE SECTION LOADED:index=17
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+DEBUG_FUNC_HAKO_ROBOT_NAME = rh850f1k
+DEBUG_FUNC_HAKO_SUB_0 = channel0/CAN_IDE0_RTR0_DLC4_0x002/0
+DEBUG_FUNC_HAKO_ASSET_NAME = athrill_test_node2
+hako_time_only: 0
+DEBUG_FUNC_FT_LOG_SIZE=1024
+LOADED: PDU DATA
+
+TOPPERS/ATK2-SC1 Release 1.4.2 for HSBRH850F1K (Sep 20 2026, 09:04:04)
+
+LOADED: PDU DATA
+Hello AUTOSAR [SW-C2] !! : 0
+Hello AUTOSAR [SW-C2] !! : 1
+Hello AUTOSAR [SW-C2] !! : 2
+Hello AUTOSAR [SW-C2] !! : 3
+Hello AUTOSAR [SW-C2] !! : 4
+Hello AUTOSAR [SW-C2] !! : 5
+Hello AUTOSAR [SW-C2] !! : 6
+Hello AUTOSAR [SW-C2] !! : 7
+Hello AUTOSAR [SW-C2] !! : 8
+Hello AUTOSAR [SW-C2] !! : 9
+Hello AUTOSAR [SW-C2] !! : 10
+Hello AUTOSAR [SW-C2] !! : 11
+Hello AUTOSAR [SW-C2] !! : 12
+Hello AUTOSAR [SW-C2] !! : 13
+Hello AUTOSAR [SW-C2] !! : 14
+Hello AUTOSAR [SW-C2] !! : 15
+Hello AUTOSAR [SW-C2] !! : 16
+Hello AUTOSAR [SW-C2] !! : 17
+Hello AUTOSAR [SW-C2] !! : 18
+Hello AUTOSAR [SW-C2] !! : 19
+Hello AUTOSAR [SW-C2] !! : 20
+Hello AUTOSAR [SW-C2] !! : 21
+Hello AUTOSAR [SW-C2] !! : 22
+Hello AUTOSAR [SW-C2] !! : 23
+Hello AUTOSAR [SW-C2] !! : 24
+Hello AUTOSAR [SW-C2] !! : 25
+Hello AUTOSAR [SW-C2] !! : 26
+Hello AUTOSAR [SW-C2] !! : 27
+Hello AUTOSAR [SW-C2] !! : 28
+Hello AUTOSAR [SW-C2] !! : 29
+Hello AUTOSAR [SW-C2] !! : 30
+Hello AUTOSAR [SW-C2] !! : 31
+Hello AUTOSAR [SW-C2] !! : 32
+Hello AUTOSAR [SW-C2] !! : 33
+Hello AUTOSAR [SW-C2] !! : 34
+Hello AUTOSAR [SW-C2] !! : 35
+Hello AUTOSAR [SW-C2] !! : 36
+Hello AUTOSAR [SW-C2] !! : 37
+Hello AUTOSAR [SW-C2] !! : 38
+Hello AUTOSAR [SW-C2] !! : 39
+Hello AUTOSAR [SW-C2] !! : 40
+Hello AUTOSAR [SW-C2] !! : 41
+Hello AUTOSAR [SW-C2] !! : 42
+Hello AUTOSAR [SW-C2] !! : 43
+Hello AUTOSAR [SW-C2] !! : 44
+Hello AUTOSAR [SW-C2] !! : 45
+Hello AUTOSAR [SW-C2] !! : 46
+Hello AUTOSAR [SW-C2] !! : 47
+Hello AUTOSAR [SW-C2] !! : 48
+Hello AUTOSAR [SW-C2] !! : 49
+Hello AUTOSAR [SW-C2] !! : 50
+Hello AUTOSAR [SW-C2] !! : 51
+Hello AUTOSAR [SW-C2] !! : 52
+Hello AUTOSAR [SW-C2] !! : 53
+Hello AUTOSAR [SW-C2] !! : 54
+Hello AUTOSAR [SW-C2] !! : 55
+Hello AUTOSAR [SW-C2] !! : 56
+Hello AUTOSAR [SW-C2] !! : 57
+Hello AUTOSAR [SW-C2] !! : 58
+Hello AUTOSAR [SW-C2] !! : 59
+Hello AUTOSAR [SW-C2] !! : 60
+Hello AUTOSAR [SW-C2] !! : 61
+Hello AUTOSAR [SW-C2] !! : 62
+Hello AUTOSAR [SW-C2] !! : 63
+Hello AUTOSAR [SW-C2] !! : 64
+Hello AUTOSAR [SW-C2] !! : 65
+Hello AUTOSAR [SW-C2] !! : 66
+Hello AUTOSAR [SW-C2] !! : 67
+Hello AUTOSAR [SW-C2] !! : 68
+Hello AUTOSAR [SW-C2] !! : 69
+Hello AUTOSAR [SW-C2] !! : 70
+Hello AUTOSAR [SW-C2] !! : 71
+Hello AUTOSAR [SW-C2] !! : 72
+Hello AUTOSAR [SW-C2] !! : 73
+Hello AUTOSAR [SW-C2] !! : 74
+Hello AUTOSAR [SW-C2] !! : 75
+Hello AUTOSAR [SW-C2] !! : 76
+Hello AUTOSAR [SW-C2] !! : 77
+Hello AUTOSAR [SW-C2] !! : 78
+Hello AUTOSAR [SW-C2] !! : 79
+Hello AUTOSAR [SW-C2] !! : 80
+Hello AUTOSAR [SW-C2] !! : 81
+Hello AUTOSAR [SW-C2] !! : 82
+Hello AUTOSAR [SW-C2] !! : 83
+Hello AUTOSAR [SW-C2] !! : 84
+Hello AUTOSAR [SW-C2] !! : 85
+Hello AUTOSAR [SW-C2] !! : 86
+Hello AUTOSAR [SW-C2] !! : 87
+Hello AUTOSAR [SW-C2] !! : 88
+Hello AUTOSAR [SW-C2] !! : 89
+Hello AUTOSAR [SW-C2] !! : 90
+Hello AUTOSAR [SW-C2] !! : 91
+Hello AUTOSAR [SW-C2] !! : 92
+Hello AUTOSAR [SW-C2] !! : 93
+Hello AUTOSAR [SW-C2] !! : 94
+Hello AUTOSAR [SW-C2] !! : 95
+Hello AUTOSAR [SW-C2] !! : 96
+Hello AUTOSAR [SW-C2] !! : 97
+Hello AUTOSAR [SW-C2] !! : 98
+Hello AUTOSAR [SW-C2] !! : 99
+Hello AUTOSAR [SW-C2] !! : 100
+Hello AUTOSAR [SW-C2] !! : 101
+Hello AUTOSAR [SW-C2] !! : 102
+Hello AUTOSAR [SW-C2] !! : 103
+Hello AUTOSAR [SW-C2] !! : 104
+Hello AUTOSAR [SW-C2] !! : 105
+Hello AUTOSAR [SW-C2] !! : 106
+Hello AUTOSAR [SW-C2] !! : 107
+Hello AUTOSAR [SW-C2] !! : 108
+Hello AUTOSAR [SW-C2] !! : 109
+Hello AUTOSAR [SW-C2] !! : 110
+Hello AUTOSAR [SW-C2] !! : 111
+Hello AUTOSAR [SW-C2] !! : 112
+Hello AUTOSAR [SW-C2] !! : 113
+Hello AUTOSAR [SW-C2] !! : 114
+Hello AUTOSAR [SW-C2] !! : 115
+Hello AUTOSAR [SW-C2] !! : 116
+Hello AUTOSAR [SW-C2] !! : 117
+Hello AUTOSAR [SW-C2] !! : 118
+Hello AUTOSAR [SW-C2] !! : 119
+Hello AUTOSAR [SW-C2] !! : 120
+Hello AUTOSAR [SW-C2] !! : 121
+Hello AUTOSAR [SW-C2] !! : 122
+Hello AUTOSAR [SW-C2] !! : 123
+Hello AUTOSAR [SW-C2] !! : 124
+Hello AUTOSAR [SW-C2] !! : 125
+Hello AUTOSAR [SW-C2] !! : 126
+Hello AUTOSAR [SW-C2] !! : 127
+Hello AUTOSAR [SW-C2] !! : 128
+Hello AUTOSAR [SW-C2] !! : 129
+Hello AUTOSAR [SW-C2] !! : 130
+Hello AUTOSAR [SW-C2] !! : 131
+Hello AUTOSAR [SW-C2] !! : 132
+Hello AUTOSAR [SW-C2] !! : 133
+Hello AUTOSAR [SW-C2] !! : 134
+Hello AUTOSAR [SW-C2] !! : 135
+Hello AUTOSAR [SW-C2] !! : 136
+Hello AUTOSAR [SW-C2] !! : 137
+Hello AUTOSAR [SW-C2] !! : 138
+Hello AUTOSAR [SW-C2] !! : 139
+Hello AUTOSAR [SW-C2] !! : 140
+Hello AUTOSAR [SW-C2] !! : 141
+Hello AUTOSAR [SW-C2] !! : 142
+Hello AUTOSAR [SW-C2] !! : 143
+Hello AUTOSAR [SW-C2] !! : 144
+Hello AUTOSAR [SW-C2] !! : 145
+Hello AUTOSAR [SW-C2] !! : 146
+Hello AUTOSAR [SW-C2] !! : 147
+Hello AUTOSAR [SW-C2] !! : 148
+Hello AUTOSAR [SW-C2] !! : 149
+
+===== TERMINAL4 (hako-cmd start) =====
+start
+

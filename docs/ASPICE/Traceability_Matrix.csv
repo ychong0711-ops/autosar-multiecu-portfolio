@@ -1,0 +1,12 @@
+Requirement,Architecture Element,Design/Source,Verification,Status
+REQ-OS-001,ECU1 cyclic task,src/ecu.c:Ecu1_100msTask,TC-INT-001,PASS
+REQ-COM-001,ECU1 COM-PduR-CanIf-CAN,src/ecu.c:Com_SendSignal,TC-INT-001,PASS
+REQ-COM-002,ECU2 CanIf-PduR-COM,src/ecu.c:Ecu2_CanIf_RxIndication,TC-INT-001,PASS
+REQ-COM-003,ECU1 CanIf,src/ecu.c:CanIf_Transmit,TC-INT-001,PASS
+REQ-ERR-001,ECU2 timeout monitor,src/ecu.c:Ecu2_100msTask,TC-ERR-001,PASS
+REQ-ERR-002,ECU2 CanIf validator,src/ecu.c:Ecu2_CanIf_RxIndication,TC-ERR-002,PASS
+REQ-ERR-003,ECU2 CanIf validator,src/ecu.c:Ecu2_CanIf_RxIndication,TC-ERR-003,PASS
+REQ-RNG-001,ECU2 COM plausibility,src/ecu.c:Com_RxIndication,TC-ERR-004,PASS
+REQ-ERR-004,ECU2 COM sequence validator,src/ecu.c:Com_RxIndication,TC-ERR-005,PASS
+REQ-PORT-001,Host build,Makefile and CI,CI build,PASS
+REQ-PORT-002,Dependency management,scripts/setup_upstream.sh,TC-UP-001,PASS

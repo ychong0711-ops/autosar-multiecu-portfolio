@@ -64,6 +64,16 @@ Std_ReturnType VirtualCan_Transmit(VirtualCanBus *bus, const CanFrame *source) {
                "data=06 62 08 01 00 00 00 00 (VehicleSpeedDID)\n",
                frame.timestamp_ms);
     }
+    if (bus->scenario == SCENARIO_WDGM_RECOVERY) {
+        /* Drop frames 300-700ms to trigger WdgM FAILED, then resume at
+         * 800ms to exercise the FAILED->OK recovery path. */
+        if (frame.timestamp_ms >= 300u && frame.timestamp_ms <= 700u) {
+            bus->dropped++;
+            printf("[%04ums][BUS] DROP reason=wdgm-recovery-inject id=0x%03X\n",
+                   frame.timestamp_ms, frame.id);
+            return E_OK;
+        }
+    }
 
     printf("[%04ums][BUS] ROUTE id=0x%03X dlc=%u ECU1->ECU2\n",
            frame.timestamp_ms, frame.id, frame.dlc);

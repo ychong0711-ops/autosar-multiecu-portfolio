@@ -12,7 +12,7 @@ Automotive software candidates often show code without demonstrating requirement
 - Implemented a portable C11 reference model with separated COM, PduR, CanIf and CAN responsibilities.
 - Implemented two virtual ECUs and deterministic bus fault injection.
 - Added timeout, identifier, DLC and plausibility protection.
-- Built six automated integration scenarios (normal, timeout, invalid-id, invalid-dlc, range boundary, sequence continuity) and CI with warnings treated as errors.
+- Built seven automated integration scenarios (normal, timeout, invalid-id, invalid-dlc, range boundary, sequence continuity, sequence wrap) and CI with warnings treated as errors.
 - Created SWE.1–SWE.5 work products and bidirectional requirements-to-test traceability.
 - Pinned a reproducible TOPPERS ATK2/A-COMSTACK/A-RTEGEN/Athrill integration path.
 - Extended the upstream sample with an own 60..250 kph vehicle-speed COM signal (patch + rerun evidence).
@@ -45,6 +45,7 @@ All four executable integration tests pass:
 - One incorrect DLC is rejected without unsafe payload access.
 - The speed plausibility boundary is exact: 65535 and 251 km/h are rejected while 250 km/h is accepted.
 - One injected duplicate sequence counter is rejected at 500 ms while the stream re-synchronizes on the next frame.
+- The 8-bit sequence counter wraps 255 → 0 and the wrapped frame is accepted as NEW while a stale replay is rejected (E2E-style continuity).
 
 ## Traceability example
 
@@ -63,7 +64,7 @@ The complete matrix is in [`docs/ASPICE/Traceability_Matrix.csv`](docs/ASPICE/Tr
 
 - The pinned RH850/Athrill integration was executed once in Docker with real evidence (`evidence/atk2-athrill.log`); it is not a CI-gated regression yet.
 - Host transport does not model CAN arbitration, bus-off, clock drift, or electrical faults.
-- Sequence-counter wrap-over has no dedicated 256-frame rollover test (the continuity logic is `uint8_t`-wrap-safe by construction).
+- Sequence-counter wrap-over is verified by a dedicated fault-injection scenario that climbs the counter to 255, wraps to 0, and confirms acceptance plus stale-replay rejection (the continuity logic uses an unsigned mod-256 half-range rule).
 - No AUTOSAR E2E profile or DCM/DEM implementation yet.
 
 Next increment: gate the Athrill run in CI (or a scheduled job), add E2E alive-counter policy, and expose a UDS diagnostic service for timeout DTC readout.

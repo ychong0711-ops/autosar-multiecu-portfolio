@@ -58,6 +58,7 @@ Run individual scenarios:
 | `invalid-seq` | REQ-ERR-004 | One duplicate counter flagged at 500 ms; stream re-synchronizes on next frame; remaining 10 frames accepted |
 | `wrap` | REQ-ERR-005 | Counter climbs to 255, wraps to 0 (accepted as NEW); stale replay rejected; stream re-synchronizes |
 | `uds` | REQ-UDS-001 | UDS diagnostic request/response injected at 600ms; COM path delivers all 11 frames unaffected |
+| `wdgm-recovery` | REQ-WDGM-001 | WdgM detects dropout (FAILED) at 700ms, recovers to OK at 800ms when frames resume; no EXPIRED |
 
 Generated evidence is in [`evidence/`](evidence/).
 

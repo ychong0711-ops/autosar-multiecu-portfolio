@@ -1,0 +1,33 @@
+name: upstream-athrill-ci
+on:
+  push:
+  pull_request:
+jobs:
+  upstream-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install TOPPERS ATK2 / Athrill toolchain (stub)
+        run: |
+          echo "=== Athrill upstream build gate ==="
+          echo "In production this would:"
+          echo "  1. Clone TOPPERS ATK2 kernel from github.com/ytbp-toppers/atk2"
+          echo "  2. Build with Athrill cross-compiler (rh850-elf-gcc)"
+          echo "  3. Run unit tests on Athrill virtual MCU"
+          echo "=== For now, verify host-reference model compiles ==="
+          make
+      - name: Verify host model all scenarios
+        run: |
+          make run
+          for s in normal timeout invalid-id invalid-dlc invalid-range invalid-seq wrap uds; do
+            echo "--- scenario: $s ---"
+            ./build/multiecu_demo "$s" > /dev/null
+          done
+          echo "--- bogus (expect exit 2) ---"
+          ./build/multiecu_demo bogus > /dev/null 2>&1 || test $? -eq 2
+      - name: Verify WdgM and NvM BSW modules
+        run: |
+          echo "=== WdgM/NvM BSW verification ==="
+          make test

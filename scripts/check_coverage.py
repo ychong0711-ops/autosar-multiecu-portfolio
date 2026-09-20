@@ -12,7 +12,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-SOURCES = ("main.c", "ecu.c", "virtual_can.c")
+SOURCES = ("main.c", "ecu.c", "virtual_can.c", "wdgm.c", "nvm.c")
 BRANCH_THRESHOLD = 80.0  # percent
 
 

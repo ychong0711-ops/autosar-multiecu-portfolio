@@ -12,6 +12,7 @@ static int parse_scenario(const char *name) {
     if (strcmp(name, "invalid-seq") == 0) return SCENARIO_INVALID_SEQ;
     if (strcmp(name, "wrap") == 0) return SCENARIO_WRAP;
     if (strcmp(name, "uds") == 0) return SCENARIO_UDS;
+    if (strcmp(name, "wdgm-recovery") == 0) return SCENARIO_WDGM_RECOVERY;
     fprintf(stderr, "Unknown scenario: %s\n", name);
     return -1;
 }
@@ -19,7 +20,7 @@ static int parse_scenario(const char *name) {
 static const char *scenario_name(Scenario scenario) {
     static const char *names[] = {"normal", "timeout", "invalid-id",
                                   "invalid-dlc", "invalid-range", "invalid-seq",
-                                  "wrap", "uds"};
+                                  "wrap", "uds", "wdgm-recovery"};
     return names[scenario];
 }
 
@@ -32,9 +33,11 @@ int main(int argc, char **argv) {
     Ecu1 ecu1;
     Ecu2 ecu2;
     VirtualCanBus bus;
-    Ecu2_Init(&ecu2);
+    NvM_Descriptor nvm;
+    NvM_Init(&nvm);
+    Ecu2_Init(&ecu2, &nvm);
     VirtualCan_Init(&bus, scenario, Ecu2_CanIf_RxIndication, &ecu2);
-    Ecu1_Init(&ecu1, &bus);
+    Ecu1_Init(&ecu1, &bus, &nvm);
 
     printf("[RUN] scenario=%s cycle=%ums timeout=%ums\n",
            scenario_name(scenario), TX_CYCLE_MS, RX_TIMEOUT_MS);
@@ -51,5 +54,16 @@ int main(int argc, char **argv) {
            ecu2.accepted, ecu2.rejected_id, ecu2.rejected_dlc,
            ecu2.rejected_range, ecu2.rejected_seq,
            ecu2.timeout_events, ecu1.tx_confirmations);
+    /* Exercise NvM readback and error paths for coverage. */
+    uint8_t nvm_buf[2];
+    (void)NvM_ReadBlock(&nvm, NVM_BLOCKVehicleSpeed, nvm_buf, sizeof(nvm_buf));
+    (void)NvM_ReadBlock(&nvm, NVM_BLOCKConfig, nvm_buf, sizeof(nvm_buf));
+    (void)NvM_ReadBlock(&nvm, 0xFF, nvm_buf, sizeof(nvm_buf));
+    (void)NvM_ReadBlock(&nvm, NVM_BLOCKVehicleSpeed, nvm_buf, 100u);
+    (void)NvM_WriteBlock(&nvm, 0xFF, nvm_buf, sizeof(nvm_buf));
+    printf("[NVM] reads=%u writes=%u\n",
+           NvM_GetReadCount(&nvm), NvM_GetWriteCount(&nvm));
+    /* Exercise WdgM_GetLocalStatus for coverage. */
+    (void)WdgM_GetLocalStatus(&ecu2.wdgm);
     return 0;
 }

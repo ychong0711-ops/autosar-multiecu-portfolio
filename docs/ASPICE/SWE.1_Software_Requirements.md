@@ -26,6 +26,8 @@ ECU1 shall cyclically transmit vehicle speed over a CAN-like transport. ECU2 sha
 | REQ-E2E-002 | E2E Profile-1 anti-replay: a duplicate sequence counter shall be rejected. | End-to-end protection for COM signals | Fault-injection duplicate test |
 | REQ-E2E-003 | E2E counter shall be independent of the CAN DLC layer; DLC rejection must not produce false sequence rejections. | Layer separation | Fault-injection cross-layer test |
 | REQ-UDS-001 | UDS diagnostic traffic (ReadDataByIdentifier 0x22) shall coexist with the periodic COM signal without interference. | Diagnostic services on shared CAN bus | UDS coexistence test |
+| REQ-WDGM-001 | ECU2 shall supervise the alive signal from ECU1 using WdgM. If no valid frame arrives for **500 ms**, WdgM shall transition to FAILED. If frames resume within the deadline, WdgM shall recover to OK without reaching EXPIRED. | Watchdog supervision of communication | WDGM recovery test |
+| REQ-NVM-001 | ECU1 and ECU2 shall persist the last transmitted/received vehicle speed to NvM block 0 and support readback with error handling for invalid block IDs and oversized lengths. | Persistent storage for diagnostics | NvM read/write test |
 | REQ-PORT-001 | The repository shall provide a deterministic host build using a C11 compiler. | Recruiter-accessible evidence | CI |
 | REQ-PORT-002 | The TOPPERS upstream revision shall be pinned. | Reproducibility | Inspection |
 

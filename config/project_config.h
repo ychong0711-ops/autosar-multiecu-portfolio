@@ -8,4 +8,10 @@
 #define SIMULATION_END_MS          1000u
 #define VEHICLE_SPEED_MAX_KPH      250u
 
+/* WdgM configuration: deadline for alive-counter supervision */
+#define WDGM_DEADLINE_MS           RX_TIMEOUT_MS
+
+/* NvM configuration */
+#define NVM_PERSIST_VEHICLE_SPEED  1u
+
 #endif

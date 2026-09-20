@@ -17,6 +17,8 @@
 | TC-E2E-002 | Duplicate counter replay at 500 ms | Exactly one sequence rejection; stream re-synchronizes on next forward frame |
 | TC-E2E-003 | Invalid DLC scenario | DLC rejection at interface; E2E counter not inspected (independent layer); 0 sequence rejections |
 | TC-UDS-001 | UDS scenario: diagnostic request/response injected at 600 ms | UDS_INJECT and UDS_RESP trace lines present; COM path delivers all 11 frames; no interference between COM and diagnostic traffic |
+| TC-WDGM-001 | WDGM-recovery scenario: frames dropped 300–700 ms (FAILED), resume at 800 ms | WdgM transitions OK→FAILED at 700 ms; recovers to OK at 800 ms without reaching EXPIRED; "deadline missed" and recovery trace present |
+| TC-NVM-001 | Normal scenario + SUMMARY NvM readback | NvM writes on TX/RX, reads back valid block, rejects invalid block ID (0xFF), rejects oversized length (100), prints read/write counts |
 
 ## Execution
 

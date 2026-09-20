@@ -1,4 +1,4 @@
-[INIT][ECU2] ATK2 task + CAN/CanIf/PduR/COM initialized
+[INIT][ECU2] ATK2 task + CAN/CanIf/PduR/COM + WdgM + NvM initialized
 [INIT][ECU1] ATK2 task + COM/PduR/CanIf/Can initialized
 [RUN] scenario=timeout cycle=100ms timeout=500ms
 [0000ms][ECU1][OS] Task_100ms activated
@@ -74,6 +74,7 @@
 [0700ms][BUS] DROP reason=fault-injection id=0x101
 [0700ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
 [0700ms][ECU2][OS] Task_100ms activated
+[0700ms][WDGM] deadline missed age=500ms threshold=500ms missed_count=1
 [0700ms][ECU2][COM] TIMEOUT age=500ms threshold=500ms
 [0800ms][ECU1][OS] Task_100ms activated
 [0800ms][ECU1][COM] Com_SendSignal speed=100kph seq=8
@@ -83,6 +84,7 @@
 [0800ms][BUS] DROP reason=fault-injection id=0x101
 [0800ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
 [0800ms][ECU2][OS] Task_100ms activated
+[0800ms][WDGM] deadline missed age=600ms threshold=500ms missed_count=2
 [0900ms][ECU1][OS] Task_100ms activated
 [0900ms][ECU1][COM] Com_SendSignal speed=105kph seq=9
 [0900ms][ECU1][PDUR] PduR_ComTransmit
@@ -91,6 +93,8 @@
 [0900ms][BUS] DROP reason=fault-injection id=0x101
 [0900ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
 [0900ms][ECU2][OS] Task_100ms activated
+[0900ms][WDGM] deadline missed age=700ms threshold=500ms missed_count=3
+[0900ms][WDGM] EXPIRED missed_count=3 expired_total=1
 [1000ms][ECU1][OS] Task_100ms activated
 [1000ms][ECU1][COM] Com_SendSignal speed=110kph seq=10
 [1000ms][ECU1][PDUR] PduR_ComTransmit
@@ -99,4 +103,7 @@
 [1000ms][BUS] DROP reason=fault-injection id=0x101
 [1000ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
 [1000ms][ECU2][OS] Task_100ms activated
+[1000ms][WDGM] deadline missed age=800ms threshold=500ms missed_count=4
+[1000ms][WDGM] EXPIRED missed_count=4 expired_total=2
 [SUMMARY] scenario=timeout tx=11 delivered=3 dropped=8 accepted=3 reject_id=0 reject_dlc=0 reject_range=0 reject_seq=0 timeouts=1 tx_confirm=11
+[NVM] reads=1 writes=14

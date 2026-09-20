@@ -1,4 +1,4 @@
-[INIT][ECU2] ATK2 task + CAN/CanIf/PduR/COM initialized
+[INIT][ECU2] ATK2 task + CAN/CanIf/PduR/COM + WdgM + NvM initialized
 [INIT][ECU1] ATK2 task + COM/PduR/CanIf/Can initialized
 [RUN] scenario=invalid-id cycle=100ms timeout=500ms
 [0000ms][ECU1][OS] Task_100ms activated
@@ -122,3 +122,4 @@
 [1000ms][ECU1][CANIF] CanIf_TxConfirmation pdu=VehicleSpeedPdu
 [1000ms][ECU2][OS] Task_100ms activated
 [SUMMARY] scenario=invalid-id tx=11 delivered=11 dropped=0 accepted=10 reject_id=1 reject_dlc=0 reject_range=0 reject_seq=0 timeouts=0 tx_confirm=11
+[NVM] reads=1 writes=21

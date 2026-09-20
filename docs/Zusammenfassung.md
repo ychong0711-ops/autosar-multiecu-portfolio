@@ -21,8 +21,10 @@ ganzheitlich:
 - Implementierung zweier virtueller ECUs und deterministischer Busfehlerinjektion.
 - Hinzufügen von Timeout-, Identifier-, DLC- und Plausibilitätsschutz.
 - Acht automatisierte Integrationsszenarien (normal, timeout, invalid-id,
-  invalid-dlc, invalid-range, invalid-seq, wrap, uds) und CI mit
+  invalid-dlc, invalid-range, invalid-seq, wrap, uds, **wdgm-recovery**) und CI mit
   Warnungen als Fehler.
+- **WdgM (Watchdog Manager)** und **NvM (Non-Volatile Memory)** BSW-Simulationsmodule
+  für Alive-Counter-Überwachung und persistente Speicherung.
 - Erstellung von SWE.1–SWE.5-Arbeitsprodukten und bidirektionaler
   Anforderungs-zu-Test-Rückverfolgbarkeit.
 - Fixierte, reproduzierbare TOPPERS ATK2/A-COMSTACK/A-RTEGEN/Athrill-Integration.
@@ -61,8 +63,9 @@ Alle 14 automatisierten Integrationstests bestanden:
 | `invalid-seq` | REQ-ERR-004 | Ein duplizierter Counter bei 500 ms markiert; Stream re-synchronisiert |
 | `wrap` | REQ-ERR-005 | Counter 255→0 akzeptiert; stale Replay abgelehnt (E2E-artig) |
 | `uds` | REQ-UDS-001 | UDS-Diagnosetraffic koexistiert mit COM ohne Störung |
+| `wdgm-recovery` | REQ-WDGM-001 | WdgM erkennt Dropout (FAILED) bei 700 ms, Rekoveriert zu OK bei 800 ms bei Frame-Resume; kein EXPIRED |
 
-**Abdeckung:** 100 % Zeilenabdeckung über alle Quelldateien.
+**Abdeckung:** 100 % Zeilenabdeckung über alle Quelldateien (inkl. `wdgm.c`, `nvm.c`).
 **Statische Analyse:** clang-tidy (clang-analyzer + bugprone), Warnungen als Fehler.
 
 ## Nachweisbare Fähigkeiten
@@ -72,6 +75,8 @@ Alle 14 automatisierten Integrationstests bestanden:
 | AUTOSAR Classic | COM/PduR/CanIf-Schichtentrennung, CAN-Vertrag |
 | E2E-Schutz | Mod-256-Sequenzcounter, Half-Range-Regel, Wrap-safe |
 | UDS | ReadDataByIdentifier (0x22), Diagnose-COEXISTENCE |
+| **WdgM** | Alive-Counter-Überwachung, FAILED→OK-Rekoverierungspfad |
+| **NvM** | Block-basierte RAM-Speicherung, Schreib-/Lese-Zählung |
 | Deterministische Tests | Simulationszeit statt Echtzeit, fehlerfreie Reproduzierbarkeit |
 | Fehlerinjektion | 8 Szenarien mit gezielter Störung |
 | Prozess | ASPICE-inspirierte Dokumentation SWE.1–SWE.5 |

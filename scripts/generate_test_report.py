@@ -5,7 +5,7 @@ root = Path(__file__).resolve().parents[1]
 evidence = root / "evidence"
 rows = []
 for scenario in ("normal", "timeout", "invalid-id", "invalid-dlc",
-                 "invalid-range", "invalid-seq"):
+                 "invalid-range", "invalid-seq", "wrap"):
     text = (evidence / f"{scenario}.log").read_text()
     line = next(x for x in text.splitlines() if x.startswith("[SUMMARY]"))
     vals = dict(re.findall(r"([a-z_]+)=([\w-]+)", line))
@@ -16,6 +16,8 @@ for scenario in ("normal", "timeout", "invalid-id", "invalid-dlc",
         "invalid-dlc": vals["reject_dlc"] == "1",
         "invalid-range": vals["reject_range"] == "2" and vals["accepted"] == "9",
         "invalid-seq": vals["reject_seq"] == "1" and vals["accepted"] == "10",
+        "wrap": vals["reject_seq"] == "1" and vals["accepted"] == "10"
+                and vals["timeouts"] == "0",
     }[scenario]
     rows.append((scenario, "PASS" if expected else "FAIL", line))
 

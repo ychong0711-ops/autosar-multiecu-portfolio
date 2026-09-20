@@ -15,3 +15,5 @@ REQ-E2E-001,E2E sequence counter wrap,src/ecu.c:Com_RxIndication,TC-E2E-001,PASS
 REQ-E2E-002,E2E duplicate rejection,src/ecu.c:Com_RxIndication,TC-E2E-002,PASS
 REQ-E2E-003,E2E counter independent of DLC,src/ecu.c:Com_RxIndication,TC-E2E-003,PASS
 REQ-UDS-001,UDS ReadDataByIdentifier coexistence,src/virtual_can.c:SCENARIO_UDS,TC-UDS-001,PASS
+REQ-WDGM-001,WdgM alive supervision,src/wdgm.c:WdgM_MainFunction,TC-WDGM-001,PASS
+REQ-NVM-001,NvM block storage,src/nvm.c:NvM_ReadBlock,NvM_WriteBlock,TC-NVM-001,PASS

@@ -20,7 +20,7 @@ ganzheitlich:
   PduR-, CanIf- und CAN-Verantwortlichkeiten.
 - Implementierung zweier virtueller ECUs und deterministischer Busfehlerinjektion.
 - Hinzufügen von Timeout-, Identifier-, DLC- und Plausibilitätsschutz.
-- Acht automatisierte Integrationsszenarien (normal, timeout, invalid-id,
+- **Neun** automatisierte Integrationsszenarien (normal, timeout, invalid-id,
   invalid-dlc, invalid-range, invalid-seq, wrap, uds, **wdgm-recovery**) und CI mit
   Warnungen als Fehler.
 - **WdgM (Watchdog Manager)** und **NvM (Non-Volatile Memory)** BSW-Simulationsmodule
@@ -51,7 +51,7 @@ Zykluszeit: `100 ms` · Timeout: `500 ms` · gültiger Bereich: `0..250 km/h`
 
 ## Verifikationsergebnis
 
-Alle 14 automatisierten Integrationstests bestanden:
+Alle **27 automatisierten Integrationstests** bestanden (9 Szenarien × Layer-Assertions + 9 dedizierte BSW-Tests):
 
 | Szenario | Anforderung | Ergebnis |
 |---|---|---|
@@ -78,10 +78,22 @@ Alle 14 automatisierten Integrationstests bestanden:
 | **WdgM** | Alive-Counter-Überwachung, FAILED→OK-Rekoverierungspfad |
 | **NvM** | Block-basierte RAM-Speicherung, Schreib-/Lese-Zählung |
 | Deterministische Tests | Simulationszeit statt Echtzeit, fehlerfreie Reproduzierbarkeit |
-| Fehlerinjektion | 8 Szenarien mit gezielter Störung |
+| Fehlerinjektion | 9 Szenarien mit gezielter Störung |
 | Prozess | ASPICE-inspirierte Dokumentation SWE.1–SWE.5 |
 | Rückverfolgbarkeit | Bidirektionale Matrix: Anforderung → Architektur → Code → Test → Evidenz |
 | CI/CD | GitHub Actions, Build + Test + Statische Analyse + Abdeckung |
+
+## Wettbewerbsdifferenzierung
+
+| Dimension | Typisches Bewerber-Portfolio | **Dieses Projekt** |
+|---|---|---|
+| **Architektur** | Monolithische main-Schleife | Explizite COM/PduR/CanIf/CAN + BSW (WdgM/NvM) |
+| **Verifikation** | "Läuft auf meinem Rechner" | 27 Tests, CI, 100% Zeilen / 92% Zweig-Abdeckung |
+| **Fehlerinjektion** | Ad-hoc printfs | 9 deterministische Szenarien mit immutable Logs |
+| **Rückverfolgbarkeit** | Keine | SWE.1–SWE.5 + bidirektionale Matrix (Anforderung→Architektur→Code→Test→Evidenz) |
+| **Target Backend** | Keiner / nur Simulator | Gepinnter TOPPERS ATK2/A-COMSTACK auf Athrill (RH850) + CI-Gate |
+| **Dokumentation** | Nur README | ASPICE-inspirierte Arbeitsprodukte + Deutsche Zusammenfassung |
+| **Prozess-Bewusstsein** | "Ich kann C" | Static-Analysis-Gate, Coverage-Gate, reproduzierbare Builds |
 
 ## Technische Entscheidungen
 

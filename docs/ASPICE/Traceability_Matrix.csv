@@ -8,5 +8,10 @@ REQ-ERR-002,ECU2 CanIf validator,src/ecu.c:Ecu2_CanIf_RxIndication,TC-ERR-002,PA
 REQ-ERR-003,ECU2 CanIf validator,src/ecu.c:Ecu2_CanIf_RxIndication,TC-ERR-003,PASS
 REQ-RNG-001,ECU2 COM plausibility,src/ecu.c:Com_RxIndication,TC-ERR-004,PASS
 REQ-ERR-004,ECU2 COM sequence validator,src/ecu.c:Com_RxIndication,TC-ERR-005,PASS
+REQ-ERR-005,ECU2 COM sequence validator,src/ecu.c:Com_RxIndication,TC-ERR-006,PASS
 REQ-PORT-001,Host build,Makefile and CI,CI build,PASS
 REQ-PORT-002,Dependency management,scripts/setup_upstream.sh,TC-UP-001,PASS
+REQ-E2E-001,E2E sequence counter wrap,src/ecu.c:Com_RxIndication,TC-E2E-001,PASS
+REQ-E2E-002,E2E duplicate rejection,src/ecu.c:Com_RxIndication,TC-E2E-002,PASS
+REQ-E2E-003,E2E counter independent of DLC,src/ecu.c:Com_RxIndication,TC-E2E-003,PASS
+REQ-UDS-001,UDS ReadDataByIdentifier coexistence,src/virtual_can.c:SCENARIO_UDS,TC-UDS-001,PASS

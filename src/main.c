@@ -10,13 +10,16 @@ static int parse_scenario(const char *name) {
     if (strcmp(name, "invalid-dlc") == 0) return SCENARIO_INVALID_DLC;
     if (strcmp(name, "invalid-range") == 0) return SCENARIO_INVALID_RANGE;
     if (strcmp(name, "invalid-seq") == 0) return SCENARIO_INVALID_SEQ;
+    if (strcmp(name, "wrap") == 0) return SCENARIO_WRAP;
+    if (strcmp(name, "uds") == 0) return SCENARIO_UDS;
     fprintf(stderr, "Unknown scenario: %s\n", name);
     return -1;
 }
 
 static const char *scenario_name(Scenario scenario) {
     static const char *names[] = {"normal", "timeout", "invalid-id",
-                                  "invalid-dlc", "invalid-range", "invalid-seq"};
+                                  "invalid-dlc", "invalid-range", "invalid-seq",
+                                  "wrap", "uds"};
     return names[scenario];
 }
 

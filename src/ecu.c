@@ -60,8 +60,19 @@ void Ecu1_100msTask(Ecu1 *ecu, uint32_t now_ms, uint16_t speed_kph) {
 static void Com_RxIndication(Ecu2 *ecu, const CanFrame *frame) {
     uint16_t speed = (uint16_t)frame->data[0] |
                      ((uint16_t)frame->data[1] << 8u);
-    if (ecu->ever_received &&
-        (int8_t)(frame->data[2] - ecu->last_sequence) <= 0) {
+    /*
+     * E2E Profile-1 style continuity check on the 8-bit rolling counter in
+     * frame->data[2]. diff is computed with unsigned mod-256 arithmetic, so
+     * a genuine forward wrap 255 -> 0 yields diff == 1 (not -255) and is
+     * treated as NEW. Half-range maximum-delta rule (AUTOSAR E2E
+     * convention): the frame is NEW iff 0 < diff <= 128. This accepts every
+     * legitimate single-step advance including the wrap, and rejects
+     * duplicates (diff == 0), backward replays and oversized forward gaps
+     * (diff > 128) that indicate loss of message order.
+     */
+    uint8_t diff = (uint8_t)((uint8_t)frame->data[2] -
+                             (uint8_t)ecu->last_sequence);
+    if (ecu->ever_received && !(diff > 0u && diff <= 128u)) {
         ecu->rejected_seq++;
         printf("[%04ums][ECU2][COM] REJECT reason=seq-not-new counter=%u last=%u\n",
                frame->timestamp_ms, frame->data[2], ecu->last_sequence);

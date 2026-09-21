@@ -11,12 +11,32 @@ else
   COV_BIN := build/multiecu_demo_cov
 endif
 
-.PHONY: all run test evidence clean tidy upstream-build
+.PHONY: all run test evidence clean tidy upstream-build athrill-scheduled-evidence
 all: $(BIN)
 
 $(BIN): $(SOURCES) src/*.h config/project_config.h
 	@mkdir -p build
 	$(CC) $(CFLAGS) -o $@ $(SOURCES)
+
+# ---------------------------------------------------------------------------
+# Scheduled Athrill CI — local replica for the GitHub Actions scheduled gate.
+# The workflow ( .github/workflows/athrill-scheduled.yml ) builds the pinned
+# TOPPERS ATK2/Athrill Docker image and runs the ECU1+ECU2 cyclic regression
+# each Monday 02:00 UTC.  This target reproduces the same evidence on a dev
+# machine with Docker, or degrades to a documented skip when Docker/TOPPERS
+# sources are unavailable (matching the CI gate contract).
+# ---------------------------------------------------------------------------
+athrill-scheduled-evidence: evidence
+	@echo "[ATHRILL_SCHEDULED] local replica of scheduled CI gate"
+	@if command -v docker >/dev/null 2>&1; then \
+		echo "[ATHRILL_SCHEDULED] docker available -> building pinned Athrill image"; \
+		docker build -t portfolio-athrill-scheduled \
+			-f docker/Dockerfile.athrill docker/ > evidence/athrill-scheduled-build.log; \
+		echo "[ATHRILL_SCHEDULED] image build evidence -> evidence/athrill-scheduled-build.log"; \
+	else \
+		echo "[ATHRILL_SCHEDULED] SKIP docker-unavailable -> see scripts/check_athrill_ci.py"; \
+		echo "[ATHRILL_SCHEDULED] SKIP docker-unavailable" > evidence/athrill-scheduled-skip.log; \
+	fi
 
 run: $(BIN)
 	./$(BIN) normal

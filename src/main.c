@@ -13,6 +13,7 @@ static int parse_scenario(const char *name) {
     if (strcmp(name, "wrap") == 0) return SCENARIO_WRAP;
     if (strcmp(name, "uds") == 0) return SCENARIO_UDS;
     if (strcmp(name, "wdgm-recovery") == 0) return SCENARIO_WDGM_RECOVERY;
+    if (strcmp(name, "uds-dtc") == 0) return SCENARIO_UDS_DTC;
     fprintf(stderr, "Unknown scenario: %s\n", name);
     return -1;
 }
@@ -20,7 +21,7 @@ static int parse_scenario(const char *name) {
 static const char *scenario_name(Scenario scenario) {
     static const char *names[] = {"normal", "timeout", "invalid-id",
                                   "invalid-dlc", "invalid-range", "invalid-seq",
-                                  "wrap", "uds", "wdgm-recovery"};
+                                  "wrap", "uds", "wdgm-recovery", "uds-dtc"};
     return names[scenario];
 }
 

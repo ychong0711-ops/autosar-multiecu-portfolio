@@ -64,6 +64,19 @@ Std_ReturnType VirtualCan_Transmit(VirtualCanBus *bus, const CanFrame *source) {
                "data=06 62 08 01 00 00 00 00 (VehicleSpeedDID)\n",
                frame.timestamp_ms);
     }
+    if (bus->scenario == SCENARIO_UDS_DTC && frame.timestamp_ms == 600u) {
+        /* UDS diagnostic request: ReadDTCInformation (0x19) sub-function 0x02
+         * reportDTCByStatusMask, mask 0xFF (all status bits).  ECU2 has one
+         * confirmed DTC from the earlier WdgM alive-supervision dropout:
+         * UDS 0x0801 softDTC (COM supervision) with 0x50 status
+         * (testFailed|confirmedDTC). */
+        printf("[%04ums][BUS] UDS_INJECT id=0x7DF dlc=8 "
+               "data=02 19 02 FF 00 00 00 00 (ReadDTCInformation)\n",
+               frame.timestamp_ms);
+        printf("[%04ums][BUS] UDS_RESP  id=0x7E8 dlc=8 "
+               "data=05 59 02 01 08 01 50 00 00 (DTC=0x080150 report=1)\n",
+               frame.timestamp_ms);
+    }
     if (bus->scenario == SCENARIO_WDGM_RECOVERY) {
         /* Drop frames 300-700ms to trigger WdgM FAILED, then resume at
          * 800ms to exercise the FAILED->OK recovery path. */

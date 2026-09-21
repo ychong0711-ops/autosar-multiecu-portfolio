@@ -25,6 +25,7 @@ typedef enum {
     SCENARIO_INVALID_SEQ,
     SCENARIO_WRAP,
     SCENARIO_UDS,
+    SCENARIO_UDS_DTC,
     SCENARIO_WDGM_RECOVERY
 } Scenario;
 

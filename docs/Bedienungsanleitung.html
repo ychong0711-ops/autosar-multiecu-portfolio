@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bedienungsanleitung — AUTOSAR Multi-ECU Portfolio</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.65; margin: 0; background: #f4f6f8; color: #1a2333;
+  }
+  header {
+    background: linear-gradient(135deg, #0b1e3c, #123b6d);
+    color: #fff; padding: 28px 6vw 22px;
+  }
+  header h1 { margin: 0 0 4px; font-size: 1.7rem; }
+  header p { margin: 0; opacity: .85; font-size: .95rem; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 6vw 60px; }
+  h2 { color: #123b6d; border-bottom: 2px solid #cdd8e4; padding-bottom: 4px; margin-top: 40px; }
+  h3 { color: #24436b; }
+  code, pre { font-family: "Cascadia Code", Consolas, monospace; }
+  kbd { background:#e8edf3; border:1px solid #c3cdd8; border-radius:4px; padding:0 5px; font-family:inherit; font-size:.9em;}
+  pre {
+    background: #0d1b2e; color: #d6e7ff; padding: 14px 16px; border-radius: 8px;
+    overflow-x: auto; font-size: .84rem; line-height: 1.5;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: .92rem; }
+  th, td { border: 1px solid #d3dce6; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #e3eaf2; }
+  .ok { color: #0a7d3a; font-weight: 600; }
+  .warn { color: #b26a00; font-weight: 600; }
+  .calc { background:#eef3f8; border-left:4px solid #123b6d; padding:10px 14px; border-radius:0 6px 6px 0; }
+  .scenario-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+  .card { background:#fff; border:1px solid #d3dce6; border-radius:8px; padding:10px 12px; }
+  .card code { font-size:.85rem; }
+  .card small { color:#566b84; }
+  footer { color:#5a6b80; font-size:.85rem; text-align:center; padding:20px; }
+  a { color:#123b6d; }
+  .lang-en { opacity:.8; font-size:.85em; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bedienungsanleitung</h1>
+  <p>AUTOSAR Classic Multi-ECU-Portfolio — Demo, Evidenz und CI-Gates lokal ausführen&nbsp;·&nbsp;<span class="lang-en">User Guide (local dev + evidence reproduction)</span></p>
+</header>
+<main>
+
+  <h2>1. Schnellstart</h2>
+  <p>Alle Szenarien sind <b>deterministisch</b> (kein RNG): ein Aufruf produziert immer dasselbe
+  CAN-Trace und dieselbe Evidenz. Für sofortige Ausführung:</p>
+  <pre>make clean build
+make run            # Szenario "normal" (ECU1→ECU2, 100 ms Zyklus)
+make test           # 27 Unit-Tests (Host-Modell)
+make evidence       # 11 Szenario-Logs nach evidence/  erzeugen
+make coverage       # 100% Zeilen / 92.45% Zweige — Gate weist Abweichung zurück
+make tidy           # clang-tidy, 0 Warnungen gefordert</pre>
+  <p>Nur das Demo ausführen (alias): <code>./$(BIN) normal</code> mit den Szenario-Namen aus §2.</p>
+
+  <h2>2. Verzeichnisstruktur</h2>
+  <table>
+    <tr><th>Pfad</th><th>Inhalt</th></tr>
+    <tr><td><code>src/</code></td><td>Modellquellen: <code>main.c ecu.c virtual_can.c wdgm.c nvm.c</code> + Header</td></tr>
+    <tr><td><code>config/</code></td><td><code>project_config.h</code> — Timings, CAN-Ids, DID/DTC-Definitionen</td></tr>
+    <tr><td><code>build/</code></td><td>Demo-Binary (<code>multiecu_demo</code>) + Coverage-Variante (<code>multiecu_demo_cov</code>)</td></tr>
+    <tr><td><code>evidence/</code></td><td>GERASTETE Beweis-Logs (u.&nbsp;a. <code>uds.log wdgm-recovery.log uds-dtc.log test-report.md</code>)</td></tr>
+    <tr><td><code>tests/</code></td><td>27 Unit-Tests (<code>python -m unittest</code>)</td></tr>
+    <tr><td><code>scripts/</code></td><td>Gate-Skripte: <code>check_coverage.py</code>, Athrill-CI-Prüfer</td></tr>
+    <tr><td><code>.github/workflows/</code></td><td>CI: <code>ci.yml</code> (PR), <code>athrill-scheduled.yml</code> (nächtlich/geplant)</td></tr>
+  </table>
+
+  <h2>3. Szenarien (Determinismus-Evidenz)</h2>
+  <p>Eine Szenario-Nummer aktiviert Fehlerinjektion in <code>virtual_can.c</code>. Jede
+  Injektion ist an einen <b>exakten Zeitstempel</b> gebunden → reproduzierbar:</p>
+  <div class="scenario-grid">
+    <div class="card"><code>normal</code><br><small>nominal, kein Fehler</small></div>
+    <div class="card"><code>timeout</code><br><small>300 ms kein Frame → RX-Timeout</small></div>
+    <div class="card"><code>invalid-id</code><br><small>CAN-ID 0x777 injiziert</small></div>
+    <div class="card"><code>invalid-dlc</code><br><small>DLC=2 korrumpiert</small></div>
+    <div class="card"><code>invalid-range</code><br><small>Speed 250→251&nbsp;kph (Range)</small></div>
+    <div class="card"><code>invalid-seq</code><br><small>Sequenzzähler doppelt</small></div>
+    <div class="card"><code>wrap</code><br><small>Zähler-Wrap 255→0→255</small></div>
+    <div class="card"><code>uds</code><br><small>UDS 0x22 DID 0x0801</small></div>
+    <div class="card"><code>uds-dtc</code><br><small>UDS 0x19 ReadDTCInformation</small></div>
+    <div class="card"><code>wdgm-recovery</code><br><small>WdgM FAILED→OK Recovery</small></div>
+  </div>
+
+  <h3>3.1 Beispiel-Trace (uds)</h3>
+  <pre>[0600ms][BUS] UDS_INJECT id=0x7DF dlc=8 data=02 22 08 01 ...  (ReadDataByIdentifier)
+[0600ms][BUS] UDS_RESP  id=0x7E8 dlc=8 data=06 62 08 01 ...      (VehicleSpeedDID)</pre>
+  <div class="calc"><b>Erwartung:</b> Fortsetzung des Nominalpfads; ECU2 meldet
+  <code>E_OK</code>. Ungültige Szenarien geben Exit-Code ≠ 0 zurück; das Skript
+  <code>tests/demo_runner.py</code> prüft die Rückgabewerte.</div>
+
+  <h2>4. Qualitäts-Gates (Gate jedes PR)</h2>
+  <table>
+    <tr><th>Gate</th><th>Befehl</th><th>Schwelle</th><th>Status (letzter Lauf)</th></tr>
+    <tr><td>Kompilierung</td><td><code>make</code></td><td><code>-Werror</code></td><td class="ok">PASS</td></tr>
+    <tr><td>Unit-Tests</td><td><code>make test</code></td><td>27/27</td><td class="ok">PASS</td></tr>
+    <tr><td>Zweigabdeckung</td><td><code>make coverage</code></td><td>Bra.&nbsp;≥&nbsp;80%</td><td class="ok">92.45%</td></tr>
+    <tr><td>Statische Analyse</td><td><code>make tidy</code></td><td>clang-tidy&nbsp;0</td><td class="ok">PASS (0)</td></tr>
+    <tr><td>Evidenz</td><td><code>make evidence</code></td><td>11 Logs vorhanden</td><td class="ok">PASS</td></tr>
+  </table>
+
+  <h2>5. Geplante CI (Athrill / Athrill-RH850)</h2>
+  <p>Der CI-Gate läuft zweigleisig: asynchroner PR-Lauf (Host-Modell) plus
+  <b>geplanter Athrill-Lauf</b> (TOPPERS ATK2/Athrill-Docker) über GitHub Actions
+  <code>schedule</code> (z.&nbsp;B. montags 02:00 UTC). Lokale Replikation des geplanten
+  Laufs einschließlich Docker-Image-Bau:</p>
+  <pre>make athrill-scheduled-evidence   # baut/verifiziert Athrill-Image + Regression; 'docker' nötig</pre>
+
+  <div class="calc"><b>Wichtig (Ehrlichkeit)</b>
+  Dieser Repo ist eine <i>Referenz-/Portfolio-Simulation</i>, kein zertifiziertes Produkt:
+  ISO 26262-OSS-Anspruch, Athrill-Ausführung und ASPICE CLA-Erklärung werden
+  <b>nicht</b> fallengelassen, aber auch nicht überschrieben. Evidenz beweist
+  Reproduzierbarkeit, nicht Zertifizierung.</div>
+
+  <h2>6. Fehlerbehebung (oft)</h2>
+  <table>
+    <tr><th>Symptom</th><th>Ursache / Lösung</th></tr>
+    <tr><td><code>make coverage</code> schlägt fehl</td><td>Nicht alle 11 Szenarien liefen. <code>make evidence</code> danach erneut.</td></tr>
+    <tr><td><code>make tidy</code> meldet Warnung</td><td>clang-tidy mit <code>--warnings-as-errors</code>; Warnung fixen, nicht unterdrücken.</td></tr>
+    <tr><td>Docker nicht installiert</td><td>Geplanter Athrill-Lauf überspringt mit Hinweis; PR-Gate bleibt grün.</td></tr>
+  </table>
+
+  <footer>Bedienungsanleitung · AUTOSAR-Classic-Referenz · deterministic evidence, kein Zertifikatsanspruch</footer>
+</main>
+</body>
+</html>

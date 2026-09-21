@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wettbewerbsbewertung — AUTOSAR Classic Multi-ECU Portfolio</title>
+<meta name="author" content="ychong0711-ops">
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.65; margin: 0; background: #f4f6f8; color: #1a2333;
+  }
+  header {
+    background: linear-gradient(135deg, #0b1e3c, #123b6d);
+    color: #fff; padding: 26px 6vw 22px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: .2px; }
+  header p { margin: 0; opacity: .88; font-size: .95rem; }
+  main { max-width: 940px; margin: 0 auto; padding: 22px 6vw 50px; }
+  h2 { color: #123b6d; border-bottom: 2px solid #ccd7e3; padding-bottom: 4px; margin-top: 34px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: .93rem; }
+  th, td { border: 1px solid #d3dce6; padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: #e5ebf2; }
+  .ok { color: #0a7d3a; font-weight: 600; }
+  .score { font-weight: 700; color: #123b6d; text-align: center; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .card { background: #fff; border: 1px solid #d8e0e9; border-radius: 9px; padding: 14px 16px; }
+  .card .num { font-size: 1.6rem; font-weight: 700; color: #0a7d3a; line-height: 1.1; }
+  .card small { color: #55677f; }
+  a { color: #123b6d; }
+  code, pre { font-family: "Cascadia Code", Consolas, Menlo, monospace; }
+  pre { background: #0d1b2e; color: #d8e6fb; padding: 12px 14px; border-radius: 8px; overflow-x: auto; font-size: .82rem; }
+  footer { text-align: center; color: #5b6c81; font-size: .85rem; padding: 12px 20px 26px; }
+  .essential { background: #fff7e6; border: 1px solid #f2d9a0; border-radius: 8px; padding: 130px 14px; }
+  .essential b { color: #8a5a00; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Wettbewerbsbewertung — AUTOSAR Classic Multi-ECU-Portfolio</h1>
+  <p>Ehrliche Einordnung im Vergleich zu typischen Bewerber-Portfolios (Hostsimulator, Raspberry-Pi, Arduino, CANoe-only) · Stand 2026</p>
+</header>
+
+<main>
+
+  <h2>1. Bewertung nach sechs Achsen (0–10)</h2>
+  <table>
+    <tr><th>Achse</th><th class="score">Punkte</th><th>Gewicht</th><th>Kernbeleg</th></tr>
+    <tr><td><b>Codetiefe / BSW-Stack</b></td><td class="score">9.0</td><td>25 %</td><td>AUTOSAR Classic COM/PduR/CanIf/CAN + WdgM + NvM (BSW-Referenz, deterministisch)</td></tr>
+    <tr><td><b>Testevidenz &amp; Qualität</b></td><td class="score">9.0</td><td>25 %</td><td>27 Unit-Tests, 100 % Zeilen- / 92 % Zweigzweig-Abdeckung, clang-tidy 0 Warnung</td></tr>
+    <tr><td><b>Fehlerinjektion / Determinismus</b></td><td class="score">9.0</td><td>20 %</td><td>11 deterministische Szenarien (Timeout, Invalid-ID/DLC/Range/Seq/Wrap, UDS 0x22, UDS DTC 0x19, WdgM-Recovery)</td></tr>
+    <tr><td><b>ASPICE / Prozess</b></td><td class="score">8.0</td><td>15 %</td><td>Konfigurierte SWE.1–SWE.5, SWE.6, SWE.4-Kennaben, evidence-Pfad, Traceability-CSV</td></tr>
+    <tr><td><b>Toolchain-Kompetenz</b></td><td class="score">8.0</td><td>10 %</td><td>clang+llvm-cov, clang-tidy, gcov (MinGW), Make, GitHub Actions, Athrill (TOPPERS) CI-Gate</td></tr>
+    <tr><td><b>Sicherheit / Safety-Awareness</b></td><td class="score">7.0</td><td>5 %</td><td>ISO-26262-Skizze (ASIL-Dekomposition), NvM CRC/redundant, WdgM-Supervision — bewusst nicht zertifiziert</td></tr>
+  </table>
+
+  <p><b>Gesamtindex ≈ 8.5 / 10</b> (gewichteter Durchschnitt). Zum Vergleich: typische
+  Bewerber-Portfolios (Hostdemo ohne Assertions, Arduino-ISR, nur CANoe-Captures)
+  landen bei <b>4–6 / 10</b>.</p>
+
+  <h2>2. Stärkster Differenzierungspunkt</h2>
+  <div class="essential">
+    <b>Wesensunterschied:</b> Die meisten Portfolios zeigen „<i>es läuft</i>“.
+    Dieses Portfolio zeigt, <b>wie man das „<i>es läuft</i>“ in einem geregelten
+    Entwicklungsprozess belegen kann</b> — mit deterministischen Fault-Injection-
+    Szenarien, reproduzierbaren Evidence-Logs, automatisiertem Coverage-Gate und
+    einer ASPICE-Traceability. Das ist genau die Denkweise, die deutsche Tier-1
+    und OEM im Interview abfragen („Wie weißt du, dass dein Code das tut, was er
+    soll?“).
+  </div>
+
+  <h2>3. Belege (evidence/)</h2>
+  <ul>
+    <li><b>Determinismus:</b> Jeder Szenario-Lauf erzeugt eine identische Zeile im
+    Trace (z.&nbsp;B. <code>SEC_TIMEOUT 500-ok</code>) — wiederholbar per
+    <code>make evidence</code>.</li>
+    <li><b>WdgM-Recovery:</b> <code>evidence/wdgm-recovery.log</code> zeigt
+    FAILED&nbsp;→&nbsp;OK (EXIT_CODE 0) nach Alive-Supervision-Dropout.</li>
+    <li><b>UDS:</b> <code>evidence/uds.log</code> / <code>evidence/uds-dtc.log</code>
+    dokumentieren ReadDataByIdentifier (0x22) und ReadDTCInformation (0x19).</li>
+    <li><b>NvM:</b> <code>evidence/uds-dtc.log</code> mit DTC 0x080150
+    (VehicleSpeed / softDTC, Status 0x50) — CRC16-gesichert + redundanter Block.</li>
+    <li><b>Testbericht:</b> <code>evidence/test-report.md</code> (27 Tests, 0 Fehler).</li>
+  </ul>
+
+  <h2>4. Ehrliche Grenzen (wichtig fürs Interview)</h2>
+  <table>
+    <tr><th>Was NICHT behauptet wird</th><th>Grund</th></tr>
+    <tr><td>Keine ISO-26262-Zertifizierung / kein ASIL-Anspruch</td><td>Decomposition ist <b>Design-Skizze</b>, keine nachgewiesene ASIL-Erfüllung; kein Tool-Qualifikations-Nachweis (FMEDA/Independence).</td></tr>
+    <tr><td>Kein realer ECU-Test (Athrill/RH850 läuft nur im Docker-CI-Tor)</td><td>Simulator/Athrill-Beleg ist Referenzmodell, kein physikalischer Hardware-Nachweis — im Repos-Honesty-Feld dezidiert vermerkt.</td></tr>
+    <tr><td>Kein vollständiges AUTOSAR-COM (z.&nbsp;B. keine Matrix-Konfigurationsvollständigkeit)</td><td>Bereitgestellter Stack ist ein Trainings-/Portfolio-Subset; Echtheit wird nicht vorgetäuscht.</td></tr>
+    <tr><td>Kein ASPICE-Auditzertifikat (nur AW 3.3 indicative)</td><td>Die Doku erfüllt keinen offiziellen Abnahmeprozess; sie zeigt <b>Prozessbewusstsein und Traceability-Disziplin</b>.</td></tr>
+  </table>
+
+  <h2>5. Diese Stärken BEWEISEN (fürs Vorstellungsgespräch)</h2>
+  <ul>
+    <li><b>„Warum WdgM?“</b> → Alive-Supervision deckt nicht nur den CAN-Timeout, sondern die <i>Lebensaktivität des Kommunikationsstacks</i> ab — Trennung von „Signal weg“ vs. „Signal falsch“ (Zweigentscheidung im Code).</li>
+    <li><b>„Warum NvM CRC?“</b> → CRC16-CCITT (0x1021) pro Block + redundanter Speicherblock: Fehlererkennung UND Redundanz sind getrennte Methoden — genau das Argument eines Safety-Integritätsdesigns.</li>
+    <li><b>„Woher weißt du, dass es testbar ist?“</b> → 11 deterministische Fault-Injection-Szenarien, jede mit Exit-Code-Gate; Reproduzierbarkeit ist Gate-Bedingung (<code>make coverage</code>).</li>
+    <li><b>„Woher die Coverage-Zahl?“</b> → <code>llvm-cov report</code> über alle 10 Szenarien-Läufe gemerged: 100 % Zeilen, 92 % Zweige (Min-Gate 80 %).</li>
+    <li><b>„Was ist der Unterschied zu CANoe/Canape-Captures?“</b> → Diese halten «BUS-Bewegung» fest; dieses Portfolio hält <b>BSW-Evidenz + Prozessnachweis + deterministische Fehlerpfade</b> fest.</li>
+  </ul>
+
+  <h2>6. Nächste Ausbaustufen (Roadmap bereits dokumentiert)</h2>
+  <table>
+    <tr><th>Stufe</th><th>Inhalt</th><th>Gate</th></tr>
+    <tr><td>B</td><td>DCM ReadDTCInformation 0x19 Sub-Ausbau (Status-Report, suche nach Runden-Maskierung)</td><td>Neues UDS-Szenario + Coverage-Branch</td></tr>
+    <tr><td>C</td><td>Athrill-Docker in <code>tidy</code> + <code>coverage</code>-Gate einbinden (statt nur evidence)</td><td>CI-Tor erweitern</td></tr>
+    <tr><td>D</td><td>NvM CRC: Einzelblock-Redundanz + Write-Verification (Write-Áfter-Read)</td><td>NvM-spezifische Unit-Tests</td></tr>
+  </table>
+
+</main>
+
+<footer>Wettbewerbsbewertung · AUTOSAR Classic Multi-ECU-Portfolio · ychong0711-ops · Eigenbewertung im Rahmen des Bewerbungsportfolios — kein offizielles Zertifikat</footer>
+</body>
+</html>
